@@ -123,7 +123,6 @@ export default function ReinforcePage({ params }: { params: { itemId: string } }
     const random = Math.random() * 100;
     const successRate = getSuccessRate(level);
     const failRate = getFailRate(level);
-    const resetRate = getResetRate(level);
 
     let newLevel = level;
     let result = '';
@@ -246,7 +245,6 @@ export default function ReinforcePage({ params }: { params: { itemId: string } }
               </div>
 
               <ResourceCounter
-                usedFragments={usedFragments}
                 usedStones={usedStones}
                 totalCost={totalCost}
                 fragmentPrice={fragmentPrice}
