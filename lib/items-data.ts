@@ -127,6 +127,31 @@ export const items: Item[] = [
       '/hero/shuriken/shuriken15.gif',
     ],
   },
+  {
+    id: 'light_half',
+    name: '루미에르 하프',
+    description: '멜로디로 적을 둔화시키고 폭발로 공중에 띄웁니다.',
+    category: 'hero',
+    maxLevel: 15,
+    images: [
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half.png',
+      '/hero/light_half/light_half11.gif',
+      '/hero/light_half/light_half12.gif',
+      '/hero/light_half/light_half13.gif',
+      '/hero/light_half/light_half14.gif',
+      '/hero/light_half/light_half15.gif',
+    ],
+  },
 
   // 전설 무기
   {
