@@ -21,7 +21,6 @@ export default function ReinforcePage({ params }: { params: { itemId: string } }
   const [fragmentPrice, setFragmentPrice] = useLocalStorage('fragmentPrice', 600000);
   const [stonePrice, setStonePrice] = useLocalStorage('stonePrice', 600000);
 
-  const [usedFragments, setUsedFragments] = useState(0);
   const [usedStones, setUsedStones] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [history, setHistory] = useState<
@@ -37,7 +36,6 @@ export default function ReinforcePage({ params }: { params: { itemId: string } }
   // Reset function to clear all records
   const handleReset = () => {
     setLevel(0);
-    setUsedFragments(0);
     setUsedStones(0);
     setTotalCost(0);
     setHistory([]);
@@ -113,7 +111,6 @@ export default function ReinforcePage({ params }: { params: { itemId: string } }
     const stonesNeeded = Math.ceil((level + 1) * 0.5);
 
     // Update used resources
-    setUsedFragments((prev) => prev + fragmentsNeeded);
     setUsedStones((prev) => prev + stonesNeeded);
 
     // Update total cost
@@ -244,12 +241,7 @@ export default function ReinforcePage({ params }: { params: { itemId: string } }
                 </p>
               </div>
 
-              <ResourceCounter
-                usedStones={usedStones}
-                totalCost={totalCost}
-                fragmentPrice={fragmentPrice}
-                stonePrice={stonePrice}
-              />
+              <ResourceCounter usedStones={usedStones} totalCost={totalCost} stonePrice={stonePrice} />
 
               <LevelAttempts attemptsPerLevel={attemptsPerLevel} maxLevel={item.maxLevel} />
 
