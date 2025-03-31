@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { use, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { items } from '@/lib/items-data';
@@ -14,8 +14,10 @@ import { RefreshCw, Zap } from 'lucide-react';
 import { LevelAttempts } from '@/components/level-attempts';
 import { HERO_STONE_AMOUNTS, LEGENDARY_STONE_AMOUNTS } from '@/lib/reinforcement-constants';
 
-export default function ReinforcePage({ params }: { params: { itemId: string } }) {
-  const item = items.find((i) => i.id === params.itemId);
+export default function ReinforcePage({ params }: { params: Promise<{ itemId: string }> }) {
+  const { itemId } = use(params);
+
+  const item = items.find((item) => item.id === itemId);
 
   const [level, setLevel] = useState(0);
   const [fragmentPrice, setFragmentPrice] = useLocalStorage('fragmentPrice', 600000);
