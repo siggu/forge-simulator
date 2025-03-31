@@ -26,8 +26,12 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const [usedStones, setUsedStones] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [history, setHistory] = useState<
-    Array<{ level: number; result: 'success' | 'decrease' | 'reset' | 'fail'; timestamp: number }>
-  >([]);
+    {
+      level: number;
+      result: 'success' | 'decrease' | 'reset' | 'fail';
+      timestamp: number;
+    }[]
+  >([]); // 상태의 타입을 명확히 설정
   const [attempts, setAttempts] = useState(0);
   const [attemptsPerLevel, setAttemptsPerLevel] = useState<Record<number, number>>({});
 
@@ -124,7 +128,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     const failRate = getFailRate(level);
 
     let newLevel = level;
-    let result = '';
+    let result: 'success' | 'decrease' | 'reset' | 'fail' = 'fail'; // 초기값을 'fail'로 설정
 
     if (random < successRate) {
       // 성공
