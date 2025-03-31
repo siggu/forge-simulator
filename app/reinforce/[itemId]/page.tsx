@@ -20,7 +20,6 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const item = items.find((item) => item.id === itemId);
 
   const [level, setLevel] = useState(0);
-  const [fragmentPrice, setFragmentPrice] = useLocalStorage('fragmentPrice', 600000);
   const [stonePrice, setStonePrice] = useLocalStorage('stonePrice', 600000);
 
   const [usedStones, setUsedStones] = useState(0);
@@ -112,15 +111,11 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
       [level]: (prev[level] || 0) + 1,
     }));
 
-    // Calculate resources needed for this level
-    const fragmentsNeeded = Math.ceil((level + 1) * 1.5);
-    const stonesNeeded = Math.ceil((level + 1) * 0.5);
-
     // Update used resources
     setUsedStones((prev) => prev + stonesNeeded);
 
     // Update total cost
-    const levelCost = fragmentsNeeded * fragmentPrice + stonesNeeded * stonePrice;
+    const levelCost = stonesNeeded * stonePrice;
     setTotalCost((prev) => prev + levelCost);
 
     const random = Math.random() * 100;
@@ -257,12 +252,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
 
           {/* Right side - Reinforcement controls */}
           <div className='bg-gray-800 rounded-lg p-6'>
-            <ResourceSettings
-              fragmentPrice={fragmentPrice}
-              stonePrice={stonePrice}
-              setFragmentPrice={setFragmentPrice}
-              setStonePrice={setStonePrice}
-            />
+            <ResourceSettings stonePrice={stonePrice} setStonePrice={setStonePrice} />
 
             <div className='mt-8 bg-gray-700 rounded-lg p-4'>
               <h3 className='text-xl font-semibold mb-4'>다음 강화 비용</h3>

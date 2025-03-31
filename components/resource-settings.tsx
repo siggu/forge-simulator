@@ -1,9 +1,7 @@
 'use client';
 
 interface ResourceSettingsProps {
-  fragmentPrice: number;
   stonePrice: number;
-  setFragmentPrice: (price: number) => void;
   setStonePrice: (price: number) => void;
 }
 
