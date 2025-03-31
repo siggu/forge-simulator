@@ -29,9 +29,7 @@ export default function ItemsPage({ params }: { params: Promise<{ category: stri
           ← 메인으로 돌아가기
         </Link>
 
-        <h1 className={`text-4xl font-bold my-8 ${categoryColorMap[params.category]}`}>
-          {categoryTitleMap[params.category]}
-        </h1>
+        <h1 className={`text-4xl font-bold my-8 ${categoryColorMap[category]}`}>{categoryTitleMap[category]}</h1>
 
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
           {categoryItems.map((item) => (
