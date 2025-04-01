@@ -1,8 +1,9 @@
 'use client';
 
-import { WeaponCategory } from '@/components/weapon-category';
 import { useState } from 'react';
 import Image from 'next/image';
+import { WeaponGacha } from '@/components/weapon-gacha';
+import { WeaponList } from '@/components/audio-player';
 
 const randomTexts = [
   'ㅋㅋ 원숭이',
@@ -53,11 +54,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mt-20'>
-          <WeaponCategory title='영웅 무기' color='purple' href='/items/hero' />
-          <WeaponCategory title='전설 무기' color='yellow' href='/items/legendary' />
-          <WeaponCategory title='필멸 무기' color='red' href='/items/mortal' />
-        </div>
+        <WeaponList />
       </div>
     </main>
   );

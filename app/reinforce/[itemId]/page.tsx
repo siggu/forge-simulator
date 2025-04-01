@@ -161,16 +161,26 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   return (
     <div className='min-h-screen bg-gray-900 text-white p-4'>
       <div className='container mx-auto max-w-7xl'>
-        <div className='flex justify-between items-center mb-4'>
-          <Link href={`/items/${item.category}`} className='text-blue-400 hover:underline inline-block'>
-            ← 아이템 목록으로 돌아가기
-          </Link>
+        <div className='flex-row justify-between sm:flex-col items-center mb-4'>
+          <div className='flex justify-between'>
+            <Link href={`/items/${item.category}`} className='text-blue-400 hover:underline inline-block'>
+              ← 아이템 목록으로 돌아가기
+            </Link>
+            <Button
+              variant='outline'
+              onClick={handleReset}
+              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-200'
+            >
+              <RefreshCw size={16} />
+              초기화
+            </Button>
+          </div>
 
-          <div className='flex gap-2'>
+          <div className='grid grid-cols-2 gap-8 mt-8'>
             <Button
               variant='outline'
               onClick={jumpToLevel11}
-              className='flex items-center gap-2 text-yellow-400 border-yellow-400 hover:bg-yellow-400/10'
+              className='flex items-center gap-2 text-yellow-400 border-yellow-400 hover:bg-yellow-200'
               disabled={level >= 11}
             >
               <Zap size={16} />
@@ -179,7 +189,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={jumpToLevel12}
-              className='flex items-center gap-2 text-blue-400 border-blue-400 hover:bg-blue-400/10'
+              className='flex items-center gap-2 text-blue-400 border-blue-400 hover:bg-blue-200'
               disabled={level >= 12}
             >
               <Zap size={16} />
@@ -188,7 +198,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={jumpToLevel13}
-              className='flex items-center gap-2 text-purple-400 border-purple-400 hover:bg-purple-400/10'
+              className='flex items-center gap-2 text-purple-400 border-purple-400 hover:bg-purple-200'
               disabled={level >= 13}
             >
               <Zap size={16} />
@@ -197,20 +207,11 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={jumpToLevel14}
-              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
+              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-200'
               disabled={level >= 14}
             >
               <Zap size={16} />
               14강으로 점프
-            </Button>
-
-            <Button
-              variant='outline'
-              onClick={handleReset}
-              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
-            >
-              <RefreshCw size={16} />
-              초기화
             </Button>
           </div>
         </div>
