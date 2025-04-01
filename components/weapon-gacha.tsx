@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 interface WeaponCategoryProps {
   title: string;
   color: 'blue' | 'purple' | 'yellow';

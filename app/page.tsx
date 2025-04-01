@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { WeaponGacha } from '@/components/weapon-gacha';
 import { WeaponList } from '@/components/audio-player';
 
 const randomTexts = [
