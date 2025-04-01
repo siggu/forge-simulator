@@ -169,7 +169,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={handleReset}
-              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-200'
+              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
             >
               <RefreshCw size={16} />
               초기화
@@ -189,7 +189,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={jumpToLevel12}
-              className='flex items-center gap-2 text-blue-400 border-blue-400 hover:bg-blue-200'
+              className='flex items-center gap-2 text-blue-400 border-blue-400 hover:bg-blue-400/10'
               disabled={level >= 12}
             >
               <Zap size={16} />
@@ -198,7 +198,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={jumpToLevel13}
-              className='flex items-center gap-2 text-purple-400 border-purple-400 hover:bg-purple-200'
+              className='flex items-center gap-2 text-purple-400 border-purple-400 hover:bg-purple-400/10'
               disabled={level >= 13}
             >
               <Zap size={16} />
@@ -207,7 +207,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             <Button
               variant='outline'
               onClick={jumpToLevel14}
-              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-200'
+              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
               disabled={level >= 14}
             >
               <Zap size={16} />
