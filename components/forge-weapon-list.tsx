@@ -17,7 +17,8 @@ export function ForgeWeaponList() {
 
   return (
     <div>
-      <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mt-20'>
+      <div className='flex justify-center text-3xl'>무기 강화</div>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mt-10'>
         <WeaponCategory title='영웅 무기' color='purple' href='/items/hero' onClick={playAudio} />
         <WeaponCategory title='전설 무기' color='yellow' href='/items/legendary' onClick={playAudio} />
         <WeaponCategory title='필멸 무기' color='red' href='/items/mortal' onClick={playAudio} />

@@ -2,12 +2,13 @@ import Link from 'next/link';
 
 interface WeaponCategoryProps {
   title: string;
-  color: 'purple' | 'yellow' | 'red';
+  color: 'blue' | 'purple' | 'yellow' | 'red';
   href: string;
   onClick?: () => void;
 }
 
 const colorMap = {
+  blue: 'bg-blue-900 hover:bg-blue-800 text-blue-300 border-blue-600',
   purple: 'bg-purple-900 hover:bg-purple-800 text-purple-300 border-purple-600',
   yellow: 'bg-yellow-900 hover:bg-yellow-800 text-yellow-300 border-yellow-600',
   red: 'bg-red-900 hover:bg-red-800 text-red-300 border-red-600',
