@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { WeaponList } from '@/components/audio-player';
+import { ForgeWeaponList, WeaponList } from '@/components/weapon-list';
+import Link from 'next/link';
+import { WeaponGacha } from '@/components/weapon-gacha';
 
 const randomTexts = [
   'ㅋㅋ 원숭이',
@@ -52,8 +54,14 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        <WeaponList />
+        <ForgeWeaponList />
+        <WeaponGacha />
+        <Link
+          href={'/mupa-calculator'}
+          className='bg-pink-900 hover:bg-pink-800 text-pink-300 border-pink-600 flex mt-20 p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 items-center justify-center'
+        >
+          <h2 className='text-3xl font-bold text-center'>무파 계산기</h2>
+        </Link>
       </div>
     </main>
   );
