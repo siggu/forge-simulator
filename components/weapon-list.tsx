@@ -3,7 +3,7 @@ import { WeaponCategory } from '@/components/weapon-category';
 
 const randomAudios = ['shopkeeper_01', 'smith_01'];
 
-export function WeaponList() {
+export function ForgeWeaponList() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const playAudio = () => {
