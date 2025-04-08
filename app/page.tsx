@@ -56,7 +56,7 @@ export default function Home() {
         </div>
 
         <ForgeWeaponList />
-        <GachaWeaponList />
+        {/* <GachaWeaponList /> */}
         <Link
           href={'/mupa-calculator'}
           className='bg-pink-900 hover:bg-pink-800 text-pink-300 border-pink-600 flex mt-20 p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 items-center justify-center'
