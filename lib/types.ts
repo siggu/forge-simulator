@@ -6,3 +6,10 @@ export interface Item {
   maxLevel: number;
   images: string[];
 }
+
+export interface GachaItem {
+  id: string;
+  name: string;
+  category: 'hero' | 'legendary';
+  image: string;
+}
