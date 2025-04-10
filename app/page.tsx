@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ForgeWeaponList } from '@/components/forge-weapon-list';
 import Link from 'next/link';
-import { GachaWeaponList } from '@/components/gacha-weapon-list';
 
 const randomTexts = [
   'ㅋㅋ 원숭이',
@@ -56,13 +55,20 @@ export default function Home() {
         </div>
 
         <ForgeWeaponList />
-        {/* <GachaWeaponList /> */}
-        <Link
-          href={'/mupa-calculator'}
-          className='bg-pink-900 hover:bg-pink-800 text-pink-300 border-pink-600 flex mt-20 p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 items-center justify-center'
-        >
-          <h2 className='text-3xl font-bold text-center'>무파 계산기</h2>
-        </Link>
+        <div className='grid grid-cols-2 gap-8'>
+          <Link
+            href={'/gacha'}
+            className='bg-green-900 hover:bg-green-800 text-green-300 border-green-600 flex mt-20 p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 items-center justify-center'
+          >
+            <h2 className='text-3xl font-bold text-center'>열쇠 뽑기</h2>
+          </Link>
+          <Link
+            href={'/mupa-calculator'}
+            className='bg-pink-900 hover:bg-pink-800 text-pink-300 border-pink-600 flex mt-20 p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 items-center justify-center'
+          >
+            <h2 className='text-3xl font-bold text-center'>무파 계산기</h2>
+          </Link>
+        </div>
       </div>
     </main>
   );
