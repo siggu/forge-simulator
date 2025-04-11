@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { GachaItem } from '@/lib/types';
+import Image from 'next/image';
 
 export default function GachaCard({ items }: { items: GachaItem[] }) {
   const [current, setCurrent] = useState<GachaItem | null>(null);
@@ -57,7 +58,7 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
           disabled={rolling}
           className='flex items-center gap-2 px-4 py-2 text-white rounded-xl disabled:opacity-50'
         >
-          <img src={boxImage} alt='열쇠' className='w-[150px] h-[150px] object-contain' />
+          <Image src={boxImage} alt='열쇠' className='w-[150px] h-[150px] object-contain' />
         </button>
 
         {/* 툴팁 */}
@@ -65,7 +66,7 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
           {items.length > 0 ? (
             items.map((item) => (
               <div key={`tooltip-${item.id}`} className='flex items-center'>
-                <img src={item.image} alt={item.name} className='w-[100px] h-[100px] object-contain border rounded' />
+                <Image src={item.image} alt={item.name} className='w-[100px] h-[100px] object-contain border rounded' />
               </div>
             ))
           ) : (
@@ -77,11 +78,11 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
       {/* 결과 출력 */}
       {current && (
         <div className='text-center mt-4'>
-          <img src={current.image} alt={current.name} className='w-40 h-40 object-contain mx-auto' />
+          <Image src={current.image} alt={current.name} className='w-40 h-40 object-contain mx-auto' />
           <div className='flex gap-4 mt-8 items-center justify-center'>
-            <img src='/button/icon_daebak.png' alt='대박' className='w-10 h-10 object-contain' />
+            <Image src='/button/icon_daebak.png' alt='대박' className='w-10 h-10 object-contain' />
             <div className='text-lg font-semibold'>{current.name}</div>
-            <img src='/button/icon_daebak.png' alt='대박' className='w-10 h-10 object-contain' />
+            <Image src='/button/icon_daebak.png' alt='대박' className='w-10 h-10 object-contain' />
           </div>
         </div>
       )}
