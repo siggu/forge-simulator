@@ -14,15 +14,15 @@ import { Button } from '@/components/ui/button';
 import { RefreshCw, Zap } from 'lucide-react';
 import { LevelAttempts } from '@/components/level-attempts';
 import { HERO_STONE_AMOUNTS, LEGENDARY_STONE_AMOUNTS } from '@/lib/reinforcement-constants';
+import Leaderboard from '@/components/leader-board';
+import RegisterNickname from '@/components/register-nickname';
 
 export default function ReinforcePage({ params }: { params: Promise<{ itemId: string }> }) {
   const { itemId } = use(params);
 
   const item = items.find((item) => item.id === itemId);
-
   const [level, setLevel] = useState(0);
   const [stonePrice, setStonePrice] = useLocalStorage('stonePrice', 600000);
-
   const [usedStones, setUsedStones] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [history, setHistory] = useState<
@@ -34,6 +34,8 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   >([]); // 상태의 타입을 명확히 설정
   const [attempts, setAttempts] = useState(0);
   const [attemptsPerLevel, setAttemptsPerLevel] = useState<Record<number, number>>({});
+  const [showModal, setShowModal] = useState(false);
+  const [hasSubmittedNickname, setHasSubmittedNickname] = useState(false);
 
   if (!item) {
     return <div>아이템을 찾을 수 없습니다.</div>;
@@ -44,27 +46,39 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     setLevel(0);
     setUsedStones(0);
     setTotalCost(0);
-    setHistory([]);
     setAttempts(0);
     setAttemptsPerLevel({});
+    setHistory([]);
+    setShowModal(false);
+    setHasSubmittedNickname(false);
+  };
+
+  const handleSubmitNickname = (nickname: string, itemName: string) => {
+    const today = new Date().toISOString().slice(0, 10);
+    const leaderboardRaw = localStorage.getItem('leaderboard');
+    const leaderboard = leaderboardRaw ? JSON.parse(leaderboardRaw) : {};
+
+    // 📌 날짜 key가 없다면 빈 객체로 초기화
+    if (!leaderboard[today]) leaderboard[today] = {};
+
+    // 📌 itemName key가 없다면 빈 배열로 초기화
+    if (!leaderboard[today][itemName]) leaderboard[today][itemName] = [];
+
+    leaderboard[today][itemName].push({
+      nickname,
+      attempts,
+      timestamp: Date.now(),
+    });
+
+    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+    setHasSubmittedNickname(true);
+    setShowModal(false);
   };
 
   // Jump to level 10 function
-  const jumpToLevel11 = () => {
-    setLevel(11);
-    setHistory((prev) => [...prev, { level: 11, result: 'success', timestamp: Date.now() }]);
-  };
-  const jumpToLevel12 = () => {
-    setLevel(12);
-    setHistory((prev) => [...prev, { level: 12, result: 'success', timestamp: Date.now() }]);
-  };
-  const jumpToLevel13 = () => {
-    setLevel(13);
-    setHistory((prev) => [...prev, { level: 13, result: 'success', timestamp: Date.now() }]);
-  };
-  const jumpToLevel14 = () => {
-    setLevel(14);
-    setHistory((prev) => [...prev, { level: 14, result: 'success', timestamp: Date.now() }]);
+  const jumpToLevel = (targetLevel: number) => {
+    setLevel(targetLevel);
+    setHistory((prev) => [...prev, { level: targetLevel, result: 'success', timestamp: Date.now() }]);
   };
 
   // Get success rate based on current level
@@ -103,57 +117,42 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const handleReinforce = () => {
     if (level >= item.maxLevel) return;
 
-    // Increment attempts counter
     setAttempts((prev) => prev + 1);
-
-    // Increment attempts counter for current level
     setAttemptsPerLevel((prev) => ({
       ...prev,
       [level]: (prev[level] || 0) + 1,
     }));
-
-    // Update used resources
     setUsedStones((prev) => prev + stonesNeeded);
-
-    // Update total cost
-    const levelCost = stonesNeeded * stonePrice;
-    setTotalCost((prev) => prev + levelCost);
+    setTotalCost((prev) => prev + nextLevelCost);
 
     const random = Math.random() * 100;
     const successRate = getSuccessRate(level);
     const failRate = getFailRate(level);
 
     let newLevel = level;
-    let result: 'success' | 'decrease' | 'reset' | 'fail' = 'fail'; // 초기값을 'fail'로 설정
+    let result: 'success' | 'decrease' | 'reset' | 'fail' = 'fail';
 
     if (random < successRate) {
-      // 성공
       newLevel = level + 1;
       result = 'success';
     } else if (level < 8) {
-      // 7 이하의 레벨에서는 실패해도 유지
       result = 'fail';
     } else if (random < successRate + failRate) {
-      // 7 이상의 레벨에서는 실패 시 1레벨 감소
       newLevel = level - 1;
-      result = 'decrease';
+      result = 'fail';
     } else {
-      // 7 이상의 레벨에서 리셋 확률에 걸릴 경우 0레벨로 초기화
       newLevel = 0;
       result = 'reset';
     }
 
-    // 상태 업데이트 (setLevel과 setHistory를 한 번만 실행)
     setLevel(newLevel);
-    setHistory((h) => [...h, { level: newLevel, result, timestamp: Date.now() }]);
+    setHistory((prev) => [...prev, { level: newLevel, result, timestamp: Date.now() }]);
 
-    if (result === 'success') {
-      playSound('success');
-    } else if (result === 'reset') {
-      playSound('reset');
-    } else {
-      playSound('fail');
+    if (result === 'success' && newLevel === item.maxLevel && !hasSubmittedNickname) {
+      setTimeout(() => setShowModal(true), 300);
     }
+
+    playSound(result);
   };
 
   const categoryColorMap: Record<string, string> = {
@@ -186,47 +185,31 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
           </div>
 
           <div className='grid grid-cols-2 gap-8 mt-8'>
-            <Button
-              variant='outline'
-              onClick={jumpToLevel11}
-              className='flex items-center gap-2 text-yellow-400 border-yellow-400 hover:bg-yellow-200'
-              disabled={level >= 11}
-            >
-              <Zap size={16} />
-              11강으로 점프
-            </Button>
-            <Button
-              variant='outline'
-              onClick={jumpToLevel12}
-              className='flex items-center gap-2 text-blue-400 border-blue-400 hover:bg-blue-400/10'
-              disabled={level >= 12}
-            >
-              <Zap size={16} />
-              12강으로 점프
-            </Button>
-            <Button
-              variant='outline'
-              onClick={jumpToLevel13}
-              className='flex items-center gap-2 text-purple-400 border-purple-400 hover:bg-purple-400/10'
-              disabled={level >= 13}
-            >
-              <Zap size={16} />
-              13강으로 점프
-            </Button>
-            <Button
-              variant='outline'
-              onClick={jumpToLevel14}
-              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
-              disabled={level >= 14}
-            >
-              <Zap size={16} />
-              14강으로 점프
-            </Button>
+            {[11, 12, 13, 14].map((lvl) => (
+              <Button
+                key={lvl}
+                variant='outline'
+                onClick={() => jumpToLevel(lvl)}
+                className='flex text-black items-center gap-2 border hover:bg-opacity-20'
+                disabled={level >= lvl}
+              >
+                <Zap size={16} />
+                {lvl}강으로 점프
+              </Button>
+            ))}
           </div>
         </div>
 
         <h1 className={`text-3xl font-bold my-6 ${categoryColorMap[item.category]}`}>{item.name} 강화</h1>
 
+        {/* 강화 리더보드 */}
+        <Leaderboard />
+        <RegisterNickname
+          isOpen={showModal}
+          attempts={attempts}
+          onSubmit={(nickname) => handleSubmitNickname(nickname, itemId)}
+          onClose={() => setShowModal(false)}
+        />
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
           {/* Left side - Item display */}
           <div className='bg-gray-800 rounded-lg p-6 flex flex-col items-center'>
