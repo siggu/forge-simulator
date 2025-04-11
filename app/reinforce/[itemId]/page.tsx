@@ -1,7 +1,7 @@
 'use client';
 
 import { playSound } from '@/utils/play-sound';
-import { use, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { items } from '@/lib/items-data';
@@ -11,7 +11,7 @@ import { ResourceCounter } from '@/components/resource-counter';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { ReinforcementHistory } from '@/components/reinforcement-history';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Zap } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { LevelAttempts } from '@/components/level-attempts';
 import { HERO_STONE_AMOUNTS, LEGENDARY_STONE_AMOUNTS } from '@/lib/reinforcement-constants';
 import Leaderboard from '@/components/leader-board';
@@ -36,6 +36,40 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const [attemptsPerLevel, setAttemptsPerLevel] = useState<Record<number, number>>({});
   const [showModal, setShowModal] = useState(false);
   const [hasSubmittedNickname, setHasSubmittedNickname] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (showModal) return;
+
+      switch (e.key) {
+        case '1':
+          jumpToLevel(11);
+          break;
+        case '2':
+          jumpToLevel(12);
+          break;
+        case '3':
+          jumpToLevel(13);
+          break;
+        case '4':
+          jumpToLevel(14);
+          break;
+        case ' ':
+          e.preventDefault();
+          buttonRef.current?.click();
+          break;
+        case 'r':
+          handleReset();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showModal]);
 
   if (!item) {
     return <div>아이템을 찾을 수 없습니다.</div>;
@@ -180,7 +214,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
               className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
             >
               <RefreshCw size={16} />
-              초기화
+              초기화(단축키: r)
             </Button>
           </div>
 
@@ -193,8 +227,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
                 className='flex text-black items-center gap-2 border hover:bg-opacity-20'
                 disabled={level >= lvl}
               >
-                <Zap size={16} />
-                {lvl}강으로 점프
+                {lvl}강 (단축키: {lvl - 10})
               </Button>
             ))}
           </div>
@@ -258,6 +291,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
             </div>
 
             <ReinforceButton
+              ref={buttonRef}
               onClick={handleReinforce}
               disabled={level >= item.maxLevel}
               level={level}

@@ -34,9 +34,23 @@ export default function RegisterNickname({
     setIsDuplicate(duplicate);
   }, [nickname, itemId]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleModalClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isOpen]);
+
   const handleSubmit = () => {
     if (!nickname || isDuplicate) return;
     onSubmit(nickname);
+    window.location.reload();
+  };
+
+  const handleModalClose = () => {
     window.location.reload();
   };
 
@@ -60,11 +74,18 @@ export default function RegisterNickname({
         <button
           onClick={handleSubmit}
           disabled={!nickname || isDuplicate}
-          className={`px-4 py-2 rounded w-full text-white ${
+          className={`px-4 py-2 rounded w-full text-white mb-2 ${
             !nickname || isDuplicate ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
           등록하기
+        </button>
+
+        <button
+          onClick={handleModalClose}
+          className='px-4 py-2 rounded w-full text-gray-700 bg-gray-200 hover:bg-gray-300'
+        >
+          닫기(esc)
         </button>
       </div>
     </div>
