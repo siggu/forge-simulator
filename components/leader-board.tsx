@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
 type LeaderboardEntry = {
   nickname: string;
   attempts: number;
-  timestamp: number;
+  timestamp: string; // Supabase에서 받아오는 값은 보통 string
 };
 
 export default function Leaderboard() {
@@ -15,27 +16,35 @@ export default function Leaderboard() {
   const itemId = params?.itemId as string;
 
   useEffect(() => {
-    const today = new Date().toISOString().slice(0, 10); // '2025-04-11' 형식
-    const leaderboardRaw = localStorage.getItem('leaderboard');
-    if (!leaderboardRaw || !itemId) return;
+    const fetchLeaderboard = async () => {
+      if (!itemId) return;
 
-    try {
-      const leaderboard = JSON.parse(leaderboardRaw);
-      const todayData = leaderboard[today];
-      const todayEntries = Array.isArray(todayData?.[itemId]) ? todayData[itemId] : [];
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+      const todayISOString = todayStart.toISOString();
 
-      // 시도 횟수 오름차순 + 동일하면 시간 빠른 순
-      const sorted = [...todayEntries].sort((a, b) => {
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('*')
+        .eq('item_id', itemId)
+        .gte('timestamp', todayISOString);
+
+      if (error) {
+        console.error('리더보드 불러오기 오류:', error);
+        return;
+      }
+
+      const sorted = data.sort((a, b) => {
         if (a.attempts === b.attempts) {
-          return a.timestamp - b.timestamp;
+          return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
         }
         return a.attempts - b.attempts;
       });
 
       setEntries(sorted);
-    } catch (error) {
-      console.error('리더보드 파싱 오류:', error);
-    }
+    };
+
+    fetchLeaderboard();
   }, [itemId]);
 
   if (entries.length === 0) return null;

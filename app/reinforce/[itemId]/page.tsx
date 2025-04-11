@@ -37,6 +37,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const [showModal, setShowModal] = useState(false);
   const [hasSubmittedNickname, setHasSubmittedNickname] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [finalAttempts, setFinalAttempts] = useState<number | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -85,6 +86,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     setHistory([]);
     setShowModal(false);
     setHasSubmittedNickname(false);
+    setFinalAttempts(null);
   };
 
   const handleSubmitNickname = (nickname: string, itemName: string) => {
@@ -151,13 +153,11 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const handleReinforce = () => {
     if (level >= item.maxLevel) return;
 
-    setAttempts((prev) => prev + 1);
-    setAttemptsPerLevel((prev) => ({
-      ...prev,
-      [level]: (prev[level] || 0) + 1,
-    }));
-    setUsedStones((prev) => prev + stonesNeeded);
-    setTotalCost((prev) => prev + nextLevelCost);
+    const nextAttempts = attempts + 1;
+    const updatedAttemptsPerLevel = {
+      ...attemptsPerLevel,
+      [level]: (attemptsPerLevel[level] || 0) + 1,
+    };
 
     const random = Math.random() * 100;
     const successRate = getSuccessRate(level);
@@ -179,10 +179,19 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
       result = 'reset';
     }
 
+    // ✅ state 업데이트
+    setAttempts(nextAttempts);
+    setAttemptsPerLevel(updatedAttemptsPerLevel);
+    setUsedStones((prev) => prev + stonesNeeded);
+    setTotalCost((prev) => prev + nextLevelCost);
     setLevel(newLevel);
     setHistory((prev) => [...prev, { level: newLevel, result, timestamp: Date.now() }]);
 
+    // ✅ 강화 성공 + maxLevel 도달 + 처음 도달했을 경우
     if (result === 'success' && newLevel === item.maxLevel && !hasSubmittedNickname) {
+      if (finalAttempts === null) {
+        setFinalAttempts(nextAttempts);
+      }
       setTimeout(() => setShowModal(true), 300);
     }
 
@@ -239,7 +248,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
         <Leaderboard />
         <RegisterNickname
           isOpen={showModal}
-          attempts={attempts}
+          attempts={finalAttempts ?? attempts}
           onSubmit={(nickname) => handleSubmitNickname(nickname, itemId)}
           onClose={() => setShowModal(false)}
         />

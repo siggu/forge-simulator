@@ -2,36 +2,46 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
-export default function RegisterNickname({
-  attempts,
-  onSubmit,
-  isOpen,
-}: {
+type Props = {
   attempts: number;
-  onSubmit: (nickname: string) => void;
-  onClose: () => void;
   isOpen: boolean;
-}) {
+  onClose: () => void;
+};
+
+export default function RegisterNickname({ attempts, isOpen, onClose }: Props) {
   const [nickname, setNickname] = useState('');
   const [isDuplicate, setIsDuplicate] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const params = useParams();
   const itemId = params?.itemId as string;
 
+  // ✅ 닉네임 중복 확인 (Supabase 기반)
   useEffect(() => {
-    if (!nickname.trim()) {
-      setIsDuplicate(false);
-      return;
-    }
+    const checkDuplicate = async () => {
+      if (!nickname.trim()) {
+        setIsDuplicate(false);
+        return;
+      }
 
-    const today = new Date().toISOString().slice(0, 10);
-    const leaderboardRaw = localStorage.getItem('leaderboard');
-    const leaderboard = leaderboardRaw ? JSON.parse(leaderboardRaw) : {};
-    const todayData = leaderboard[today];
-    const todayEntries = Array.isArray(todayData?.[itemId]) ? todayData[itemId] : [];
+      const today = new Date().toISOString().slice(0, 10);
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('nickname')
+        .eq('item_id', itemId)
+        .gte('timestamp', `${today}T00:00:00.000Z`);
 
-    const duplicate = todayEntries.some((entry: { nickname: string }) => entry.nickname === nickname);
-    setIsDuplicate(duplicate);
+      if (error) {
+        console.error('중복 확인 오류:', error);
+        return;
+      }
+
+      const exists = data?.some((entry) => entry.nickname === nickname);
+      setIsDuplicate(exists);
+    };
+
+    checkDuplicate();
   }, [nickname, itemId]);
 
   useEffect(() => {
@@ -44,9 +54,25 @@ export default function RegisterNickname({
     }
   }, [isOpen]);
 
-  const handleSubmit = () => {
-    if (!nickname || isDuplicate) return;
-    onSubmit(nickname);
+  const handleSubmit = async () => {
+    if (!nickname || isDuplicate || isSubmitting) return;
+
+    setIsSubmitting(true);
+    const { error } = await supabase.from('leaderboard').insert({
+      item_id: itemId,
+      nickname,
+      attempts,
+      timestamp: new Date().toISOString(),
+    });
+
+    setIsSubmitting(false);
+
+    if (error) {
+      alert('등록 실패. 잠시 후 다시 시도해주세요.');
+      console.error(error);
+      return;
+    }
+
     window.location.reload();
   };
 
@@ -73,12 +99,14 @@ export default function RegisterNickname({
         {isDuplicate && <p className='text-red-500 text-sm mb-2'>이미 등록된 닉네임입니다.</p>}
         <button
           onClick={handleSubmit}
-          disabled={!nickname || isDuplicate}
+          disabled={!nickname || isDuplicate || isSubmitting}
           className={`px-4 py-2 rounded w-full text-white mb-2 ${
-            !nickname || isDuplicate ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+            !nickname || isDuplicate || isSubmitting
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
-          등록하기
+          {isSubmitting ? '등록 중...' : '등록하기'}
         </button>
 
         <button
