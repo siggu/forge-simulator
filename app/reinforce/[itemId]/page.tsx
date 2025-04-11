@@ -1,5 +1,6 @@
 'use client';
 
+import { playSound } from '@/utils/play-sound';
 import { use, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -145,6 +146,14 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     // 상태 업데이트 (setLevel과 setHistory를 한 번만 실행)
     setLevel(newLevel);
     setHistory((h) => [...h, { level: newLevel, result, timestamp: Date.now() }]);
+
+    if (result === 'success') {
+      playSound('success');
+    } else if (result === 'reset') {
+      playSound('reset');
+    } else {
+      playSound('fail');
+    }
   };
 
   const categoryColorMap: Record<string, string> = {

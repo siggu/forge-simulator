@@ -11,7 +11,7 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
 
   useEffect(() => {
     if (gachaAudioRef.current) {
-      gachaAudioRef.current.volume = 0.1; // 적당한 기본 볼륨
+      gachaAudioRef.current.volume = 0.2; // 적당한 기본 볼륨
     }
   }, []);
 
