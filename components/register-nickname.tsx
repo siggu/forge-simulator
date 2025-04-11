@@ -37,6 +37,7 @@ export default function RegisterNickname({
   const handleSubmit = () => {
     if (!nickname || isDuplicate) return;
     onSubmit(nickname);
+    window.location.reload();
   };
 
   if (!isOpen) return null;
