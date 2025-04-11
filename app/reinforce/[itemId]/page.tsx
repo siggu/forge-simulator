@@ -89,28 +89,6 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     setFinalAttempts(null);
   };
 
-  const handleSubmitNickname = (nickname: string, itemName: string) => {
-    const today = new Date().toISOString().slice(0, 10);
-    const leaderboardRaw = localStorage.getItem('leaderboard');
-    const leaderboard = leaderboardRaw ? JSON.parse(leaderboardRaw) : {};
-
-    // 📌 날짜 key가 없다면 빈 객체로 초기화
-    if (!leaderboard[today]) leaderboard[today] = {};
-
-    // 📌 itemName key가 없다면 빈 배열로 초기화
-    if (!leaderboard[today][itemName]) leaderboard[today][itemName] = [];
-
-    leaderboard[today][itemName].push({
-      nickname,
-      attempts,
-      timestamp: Date.now(),
-    });
-
-    localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
-    setHasSubmittedNickname(true);
-    setShowModal(false);
-  };
-
   // Jump to level 10 function
   const jumpToLevel = (targetLevel: number) => {
     setLevel(targetLevel);
@@ -246,12 +224,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
 
         {/* 강화 리더보드 */}
         <Leaderboard />
-        <RegisterNickname
-          isOpen={showModal}
-          attempts={finalAttempts ?? attempts}
-          onSubmit={(nickname) => handleSubmitNickname(nickname, itemId)}
-          onClose={() => setShowModal(false)}
-        />
+        <RegisterNickname isOpen={showModal} attempts={finalAttempts ?? attempts} />
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
           {/* Left side - Item display */}
           <div className='bg-gray-800 rounded-lg p-6 flex flex-col items-center'>

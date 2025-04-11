@@ -7,10 +7,9 @@ import { supabase } from '@/lib/supabase';
 type Props = {
   attempts: number;
   isOpen: boolean;
-  onClose: () => void;
 };
 
-export default function RegisterNickname({ attempts, isOpen, onClose }: Props) {
+export default function RegisterNickname({ attempts, isOpen }: Props) {
   const [nickname, setNickname] = useState('');
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,11 +57,14 @@ export default function RegisterNickname({ attempts, isOpen, onClose }: Props) {
     if (!nickname || isDuplicate || isSubmitting) return;
 
     setIsSubmitting(true);
+
+    const kstNow = new Date(new Date().getTime() + 1000 * 60 * 60 * 9); // ✅ UTC → KST
+
     const { error } = await supabase.from('leaderboard').insert({
       item_id: itemId,
       nickname,
       attempts,
-      timestamp: new Date().toISOString(),
+      timestamp: kstNow,
     });
 
     setIsSubmitting(false);

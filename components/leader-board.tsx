@@ -67,8 +67,14 @@ export default function Leaderboard() {
               <td className='py-2'>{index + 1}</td>
               <td className='py-2'>{entry.nickname}</td>
               <td className='py-2'>{entry.attempts}</td>
+              <>{console.log('timestamp:', entry.timestamp, new Date(entry.timestamp))}</>
               <td className='py-2 hidden sm:table-cell text-gray-400'>
-                {new Date(entry.timestamp).toLocaleTimeString()}
+                {new Date(entry.timestamp).toLocaleTimeString('ko-KR', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                  hour12: false,
+                })}
               </td>
             </tr>
           ))}
