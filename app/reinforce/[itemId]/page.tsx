@@ -187,6 +187,26 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   const stonesNeeded = item.category === 'hero' ? HERO_STONE_AMOUNTS[level] : LEGENDARY_STONE_AMOUNTS[level];
   const nextLevelCost = stonesNeeded * stonePrice;
 
+  function formatKoreanCurrency(num: number): string {
+    if (num === 0) return '0';
+
+    const units = ['억', '천만', '백만', '십만', '만', '천', '백', '십', ''];
+    const unitValues = [100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1];
+    const result = [];
+
+    for (let i = 0; i < unitValues.length; i++) {
+      const unitValue = unitValues[i];
+      const unit = units[i];
+      const digit = Math.floor(num / unitValue);
+      if (digit > 0) {
+        result.push(`${digit}${unit}`);
+        num %= unitValue;
+      }
+    }
+
+    return result.join(' ');
+  }
+
   return (
     <div className='min-h-screen bg-gray-900 text-white p-4'>
       <div className='container mx-auto max-w-7xl'>
@@ -267,7 +287,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
               <div className='space-y-2 mb-4'>
                 <p>정교한 강화석: {stonesNeeded}개</p>
                 <p className='text-xl mt-4'>
-                  총 비용: <span className='font-bold'>{nextLevelCost}</span> 골드
+                  총 비용: <span className='font-bold'>{formatKoreanCurrency(nextLevelCost)} 골드</span>
                 </p>
               </div>
             </div>
