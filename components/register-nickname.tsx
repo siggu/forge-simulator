@@ -63,7 +63,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
     const { error } = await supabase.from('leaderboard').insert({
       item_id: itemId,
       nickname,
-      attempts,
+      attempts: attempts === 0 ? 1 : attempts,
       timestamp: kstNow,
     });
 
@@ -89,7 +89,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
       <div className='bg-white p-6 rounded-xl max-w-sm w-full text-center'>
         <h2 className='text-xl font-bold mb-4'>축하합니다! 🎉</h2>
         <p className='mb-2'>
-          총 강화 시도: <strong>{attempts}</strong>번
+          총 강화 시도: <strong>{attempts === 0 ? 1 : attempts}</strong>번
         </p>
         <input
           type='text'
