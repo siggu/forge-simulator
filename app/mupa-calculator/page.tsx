@@ -53,7 +53,7 @@ export default function MupaCalculator() {
         </Link>
 
         <div className='flex flex-row gap-10 mb-10 items-center'>
-          <Image src='/boss/soulstone2.png' width={70} height={70} alt='무파' />
+          <Image src='/boss_item/soulstone2.png' width={70} height={70} alt='무파' />
           <div className='text-4xl font-bold text-pink-500'>무파 계산기</div>
         </div>
 
@@ -68,7 +68,7 @@ export default function MupaCalculator() {
           {villageData.map(({ village, icons }, vIdx) => (
             <div key={village} className='flex flex-col gap-2'>
               <div className='flex items-center gap-2'>
-                <Image src={`/boss/${village}.png`} width={50} height={50} alt={village} priority />
+                <Image src={`/boss_item/${village}.png`} width={50} height={50} alt={village} priority />
                 <button
                   onClick={() => resetVillage(vIdx)}
                   className='bg-yellow-500 px-2 py-1 rounded text-white text-sm transition-all duration-300 transform hover:scale-105 hover:cursor-pointer'
@@ -80,7 +80,7 @@ export default function MupaCalculator() {
                 {icons.map((icon, iIdx) => (
                   <div key={icon} className='flex flex-col items-center'>
                     <div className='w-[50px] h-[50px]'>
-                      <Image src={`/boss/${icon}.png`} width={50} height={50} alt={icon} loading='lazy' />
+                      <Image src={`/boss_item/${icon}.png`} width={50} height={50} alt={icon} loading='lazy' />
                     </div>
                     <input
                       type='number'
