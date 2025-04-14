@@ -7,7 +7,7 @@ export default function PasswordGatePage() {
   const router = useRouter();
 
   const handleSubmit = () => {
-    if (password === process.env.NEXT_PUBLIC_HWANSAN_PASSWORD) {
+    if (password === process.env.NEXT_PUBLIC_HWANSAN_ENTER_PASSWORD) {
       localStorage.setItem('access_granted', 'true');
       router.push('/hwansan'); // 비밀 페이지로 이동
     } else {
