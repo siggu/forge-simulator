@@ -67,7 +67,7 @@ export interface BossItem {
   id: string;
   name: string;
   category: 'boss';
-  image: string;
+  images: string[];
   damages: KeyWeaponDamage[];
   times: number;
 }
