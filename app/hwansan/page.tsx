@@ -1,7 +1,6 @@
 'use clinet';
 
 import Link from 'next/link';
-import JobList from './[category]/page';
 
 export default function HwansanPage() {
   return (

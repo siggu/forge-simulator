@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { ForgeWeaponList } from '@/components/forge-weapon-list';
 import Link from 'next/link';
+import InstallPWAButton from '@/components/install-pwa-button';
 
 const randomTexts = [
   'ㅋㅋ 원숭이',
@@ -76,6 +77,7 @@ export default function Home() {
           </Link>
         </div>
       </div>
+      <InstallPWAButton />
     </main>
   );
 }
