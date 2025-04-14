@@ -55,6 +55,12 @@ export default function Home() {
         </div>
 
         <ForgeWeaponList />
+        <Link
+          href={'/password-gate'}
+          className='bg-blue-900 hover:bg-blue-800 text-blue-300 border-blue-600 flex mt-20 p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 items-center justify-center'
+        >
+          <h2 className='text-3xl font-bold text-center'>환산 계산기</h2>
+        </Link>
         <div className='grid grid-cols-2 gap-8'>
           <Link
             href={'/gacha'}
