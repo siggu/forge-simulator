@@ -11,6 +11,10 @@ interface JobWeaponDamage {
   left: number[];
   right?: number[];
   shift_right: number[];
+  left_bonus?: number;
+  passive_bonus?: number;
+  passive_rate?: number;
+  additional_damage?: number[];
 }
 
 // 운명 무기 대미지
@@ -60,6 +64,7 @@ export interface DestinyItem {
   category: 'destiny';
   image: string;
   damages?: DestinyWeaponDamage[];
+  bonus?: number;
 }
 
 // 보스 무기
