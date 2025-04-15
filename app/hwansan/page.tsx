@@ -80,10 +80,9 @@ export default function HwansanPage() {
 
     // 직업 패시브 (워리어)
     if (weaponItem.damages[0].passive_bonus) {
-      leftDamage = leftDamage * 0.9775;
-      rightDamage = rightDamage * 0.9775;
-      shiftRightDamage = shiftRightDamage * 0.9775;
-      console.log('워리어 패시브 85퍼 적용', leftDamage, rightDamage, shiftRightDamage);
+      leftDamage = leftDamage * 1.1275;
+      rightDamage = rightDamage * 1.1275;
+      shiftRightDamage = shiftRightDamage * 1.1275;
     }
 
     // 직업 패시브 (프로스트)
@@ -93,18 +92,10 @@ export default function HwansanPage() {
       shiftRightDamage = shiftRightDamage + weaponItem.damages[0].additional_damage[level];
     }
 
-    // 프로스트 좌클릭 3타 중 1타는 1.5배 -> 평균 1.1667배
+    // 프로스트 좌클릭 3타
     if (job === '프로스트') {
       leftDamage *= 1.1667;
     }
-
-    // 직업 패시브 가동률 (워리어)
-    // if (weaponItem.damages[0].passive_rate) {
-    //   console.log('패시브 가동률', weaponItem.damages[0].passive_rate);
-    //   leftDamage = leftDamage * weaponItem.damages[0].passive_rate;
-    //   rightDamage = rightDamage * weaponItem.damages[0].passive_rate;
-    //   shiftRightDamage = shiftRightDamage * weaponItem.damages[0].passive_rate;
-    // }
 
     // 직업무기 DPM
     const jobWeaponDPM = leftDamage + rightDamage + shiftRightDamage;
@@ -229,9 +220,6 @@ export default function HwansanPage() {
   const zeusSpearRightDamage =
     (60 / zeusSpearRightCoolTime) * (destinyItems[1].damages[0].right * destinyItems[1].damages[0].right_times);
 
-  // 보스 추가 대미지
-  const bossDamage = Number(bossAdditionalDamage);
-
   // 길드 유대감 레벨
   const guildDamage = Number(guildAdditionalDamage) * 0.65 + Number(guildAdditionalDamage) * 0.4;
 
@@ -247,15 +235,19 @@ export default function HwansanPage() {
   // 최종 DPM 계산
   const finalDPM = useMemo(() => {
     const jobWeaponDPMValues = Number(Object.values(jobWeaponDPMs));
+    console.log(jobWeaponDPMValues);
 
-    console.log(destinyAwakenings);
-
+    const specialWeaponDPM = selectedWeapons.reduce((sum, weapon) => sum + weapon.dpm, 0);
     const dragonSword = destinyAwakenings['dragon_sword_ef'] ? dragonSwordLeftDamage + dragonSwordRightDamage : 0;
     const zeusSpear = destinyAwakenings['zeus_spear_ef'] ? zeusSpearLeftDamage + zeusSpearRightDamage : 0;
-    const specialWeaponDPM = selectedWeapons.reduce((sum, weapon) => sum + weapon.dpm, 0);
 
     const totalDPM = jobWeaponDPMValues + dragonSword + zeusSpear + specialWeaponDPM;
-    const multiplier = (bossDamage + statDamage + guildDamage + divineDamage) / 100 + 1;
+    const multiplier = (statDamage + guildDamage + divineDamage) / 100 + 1;
+
+    console.log('직업 무기 DPM', jobWeaponDPMValues);
+    console.log('발할라 + 올림푸스 DPM', dragonSword + zeusSpear);
+    console.log('특수 무기 DPM', specialWeaponDPM);
+    console.log('곱하기 전 DPM', totalDPM);
 
     return totalDPM * multiplier * 1.25;
   }, [
@@ -265,7 +257,6 @@ export default function HwansanPage() {
     zeusSpearLeftDamage,
     zeusSpearRightDamage,
     selectedWeapons,
-    bossDamage,
     statDamage,
     guildDamage,
     divineDamage,
