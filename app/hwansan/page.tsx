@@ -235,7 +235,6 @@ export default function HwansanPage() {
   // 최종 DPM 계산
   const finalDPM = useMemo(() => {
     const jobWeaponDPMValues = Number(Object.values(jobWeaponDPMs));
-    console.log(jobWeaponDPMValues);
 
     const specialWeaponDPM = selectedWeapons.reduce((sum, weapon) => sum + weapon.dpm, 0);
     const dragonSword = destinyAwakenings['dragon_sword_ef'] ? dragonSwordLeftDamage + dragonSwordRightDamage : 0;
@@ -243,11 +242,6 @@ export default function HwansanPage() {
 
     const totalDPM = jobWeaponDPMValues + dragonSword + zeusSpear + specialWeaponDPM;
     const multiplier = (statDamage + guildDamage + divineDamage) / 100 + 1;
-
-    console.log('직업 무기 DPM', jobWeaponDPMValues);
-    console.log('발할라 + 올림푸스 DPM', dragonSword + zeusSpear);
-    console.log('특수 무기 DPM', specialWeaponDPM);
-    console.log('곱하기 전 DPM', totalDPM);
 
     return totalDPM * multiplier * 1.25;
   }, [
@@ -262,8 +256,6 @@ export default function HwansanPage() {
     divineDamage,
     destinyAwakenings,
   ]);
-
-  console.log('최종 DPM', finalDPM);
 
   return (
     <div className='min-h-screen bg-gray-900 text-white p-4'>
@@ -463,6 +455,12 @@ export default function HwansanPage() {
               className='p-2 border border-2-white rounded w-100'
             />
           </div>
+        </div>
+
+        {/* 최종 DPM */}
+        <div className='flex flex-col items-center'>
+          <div className='text-2xl'>최종 DPM</div>
+          <div className='text-3xl font-bold text-yellow-400'>{finalDPM.toFixed(2)}</div>
         </div>
       </div>
     </div>
