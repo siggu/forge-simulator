@@ -744,11 +744,13 @@ export const jobItems: JobWeaponItem[] = [
     image: '/job/mage.png',
     left_cooldown: 1,
     right_cooldown: 8,
-    shift_right_cooldown: 18,
+    left_shift_cooldown: 14,
+    right_shift_cooldown: 18,
     damages: [
       {
         left: [216, 226, 235, 246, 257, 268, 278, 289, 300, 321, 331, 342, 352, 363, 373],
         right: [216, 226, 235, 246, 257, 268, 278, 289, 300, 321, 331, 342, 352, 363, 373],
+        left_shift: [1490, 1547, 1602, 1655, 1706, 1756, 1805, 1853, 1899, 1990, 2033, 2075, 2116, 2157, 2197],
         shift_right: [2214, 2383, 2552, 2721, 2890, 3060, 3230, 3401, 3571, 3911, 4080, 4250, 4420, 4590, 4760],
       },
     ],
@@ -758,11 +760,13 @@ export const jobItems: JobWeaponItem[] = [
     image: '/job/ninja.png',
     left_cooldown: 0.8,
     right_cooldown: 7,
-    shift_right_cooldown: 18,
+    left_shift_cooldown: 15,
+    right_shift_cooldown: 18,
     damages: [
       {
         left: [196, 206, 216, 227, 238, 250, 262, 274, 286, 308, 319, 330, 341, 352, 363],
         right: [303, 310, 317, 322, 328, 335, 340, 347, 354, 366, 372, 378, 384, 390, 396],
+        left_shift: [1350, 1403, 1454, 1503, 1551, 1598, 1646, 1689, 1732, 1815, 1855, 1897, 1935, 1972, 2009],
         shift_right: [2292, 2472, 2652, 2832, 3012, 3192, 3384, 3564, 3744, 4104, 4284, 4476, 4656, 4836, 5016],
         left_bonus: 15,
       },
@@ -773,11 +777,13 @@ export const jobItems: JobWeaponItem[] = [
     image: '/job/warrior.png',
     left_cooldown: 1,
     right_cooldown: 8,
-    shift_right_cooldown: 18,
+    left_shift_cooldown: 17,
+    right_shift_cooldown: 18,
     damages: [
       {
         left: [216, 227, 238, 247, 258, 269, 278, 289, 300, 321, 331, 342, 352, 363, 373],
         right: [270, 283, 297, 309, 322, 336, 348, 289, 375, 401, 414, 427, 440, 453, 466],
+        left_shift: [1652, 1715, 1772, 1835, 1892, 1948, 2005, 2058, 2109, 2209, 2257, 2304, 2350, 2395, 2440],
         shift_right: [2013, 2167, 2310, 2475, 2629, 2783, 2948, 3102, 3256, 3566, 3721, 3876, 4031, 4186, 4341],
         passive_bonus: 15,
       },
@@ -788,13 +794,15 @@ export const jobItems: JobWeaponItem[] = [
     image: '/job/lance.png',
     left_cooldown: 1.1,
     right_cooldown: 8,
-    shift_right_cooldown: 18,
+    left_shift_cooldown: 14,
+    right_shift_cooldown: 18,
     damages: [
       {
         left: [262, 272, 283, 294, 305, 316, 326, 337, 348, 370, 381, 392, 403, 414, 425],
         right: [276, 272, 284, 294, 306, 316, 326, 338, 348, 368, 378, 388, 400, 410, 420],
-        shift_right: [2013, 2167, 2310, 2475, 2629, 2783, 2948, 3102, 3256, 3566, 3721, 3876, 4031, 4186, 4341],
-        additional_damage: [192, 211, 230, 246, 263, 280, 298, 315, 332, 367, 384, 402, 419, 437, 454],
+        left_shift: [1730, 1818, 1898, 1964, 2035, 2100, 2166, 2227, 2290, 2412, 2468, 2525, 2579, 2634, 2685],
+        shift_right: [2110, 2325, 2530, 2705, 2900, 3085, 3280, 3465, 3660, 4050, 4240, 4435, 4625, 4820, 5010],
+        additional_damage: [211, 233, 253, 271, 290, 309, 328, 347, 366, 405, 424, 444, 463, 482, 501],
       },
     ],
   },

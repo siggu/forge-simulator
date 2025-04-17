@@ -10,6 +10,7 @@ interface KeyWeaponDamage {
 interface JobWeaponDamage {
   left: number[];
   right?: number[];
+  left_shift: number[];
   shift_right: number[];
   left_bonus?: number;
   passive_bonus?: number;
@@ -53,7 +54,8 @@ export interface JobWeaponItem {
   image: string;
   left_cooldown: number;
   right_cooldown?: number;
-  shift_right_cooldown: number;
+  left_shift_cooldown: number;
+  right_shift_cooldown: number;
   damages?: JobWeaponDamage[];
 }
 

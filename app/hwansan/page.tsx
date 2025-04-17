@@ -50,57 +50,72 @@ export default function HwansanPage() {
   // DPM -> 60/쿨타임*표기딜
 
   const jobWeaponDPMs = {};
-  // 직업 대미지
   Object.keys(jobWeaponLevels).forEach((job) => {
-    // 무기 강화 차수
     const level = jobWeaponLevels[job];
-
     const weaponItem = jobItems.find((item) => item.id === job);
+
     if (!weaponItem) {
       console.warn(`${job} 무기 정보를 찾을 수 없습니다.`);
       return;
     }
 
-    // 좌클릭 DPM
-    const leftCoolTime = weaponItem.left_cooldown;
-    let leftDamage = (60 / leftCoolTime) * weaponItem.damages[0].left[level];
+    const damageInfo = weaponItem.damages[0];
+    const left = damageInfo.left[level];
+    const right = damageInfo.right[level];
+    const leftShift = damageInfo.left_shift?.[level];
+    const rightShift = damageInfo.shift_right[level];
 
-    // 우클릭 DPM
-    const rightCoolTime = weaponItem.right_cooldown;
-    let rightDamage = (60 / rightCoolTime) * weaponItem.damages[0].right[level];
+    const leftCool = weaponItem.left_cooldown;
+    const rightCool = weaponItem.right_cooldown;
+    const leftShiftCool = weaponItem.left_shift_cooldown;
+    const rightShiftCool = weaponItem.right_shift_cooldown;
 
-    // 쉬프트+우클릭 DPM
-    const shiftRightCoolTime = weaponItem.shift_right_cooldown;
-    let shiftRightDamage = (60 / shiftRightCoolTime) * weaponItem.damages[0].shift_right[level];
+    let leftDamage = (60 / leftCool) * left;
+    let rightDamage = (60 / rightCool) * right;
+    let leftShiftDamage = (60 / leftShiftCool) * leftShift;
+    let rightShiftDamage = (60 / rightShiftCool) * rightShift;
 
-    // 좌클릭 패시브 (블레이드)
-    if (weaponItem.damages[0].left_bonus) {
-      leftDamage = leftDamage * 1.15;
+    // 블레이드 좌클릭 패시브
+    if (job === '블레이드' && damageInfo.left_bonus) {
+      leftDamage *= 1.15;
     }
 
-    // 직업 패시브 (워리어)
-    if (weaponItem.damages[0].passive_bonus) {
-      leftDamage = leftDamage * 1.1275;
-      rightDamage = rightDamage * 1.1275;
-      shiftRightDamage = shiftRightDamage * 1.1275;
+    // 워리어 계열 패시브
+    if (job === '워리어' && damageInfo.passive_bonus) {
+      leftDamage *= 1.1275;
+      rightDamage *= 1.1275;
+      leftShiftDamage *= 1.15;
+      rightShiftDamage *= 1.15;
     }
 
-    // 직업 패시브 (프로스트)
-    if (weaponItem.damages[0].additional_damage) {
-      leftDamage = leftDamage + weaponItem.damages[0].additional_damage[level];
-      rightDamage = rightDamage + weaponItem.damages[0].additional_damage[level];
-      shiftRightDamage = shiftRightDamage + weaponItem.damages[0].additional_damage[level];
+    // 프로스트 계열 패시브
+    if (job === '프로스트' && damageInfo.additional_damage) {
+      const add = damageInfo.additional_damage[level];
+      rightDamage += add;
+      rightShiftDamage += add;
+      leftShiftDamage += add;
+
+      // 좌클릭은 3타마다 50% 추가 대미지
+      const atk1 = left;
+      const atk2 = left;
+      const atk3 = left * 1.5;
+      leftDamage = (60 / (leftCool * 3)) * (atk1 + atk2 + atk3);
     }
 
-    // 프로스트 좌클릭 3타
-    if (job === '프로스트') {
-      leftDamage *= 1.1667;
+    // 메이지 스택 기반 강화 계산 (shift + 우클릭만 적용)
+    if (job === '메이지') {
+      const normalShift = (60 / rightShiftCool) * rightShift * 0.333; // 일반
+      const boostedShift = (60 / rightShiftCool) * (rightShift * 1.3) * 0.667; // 스택
+      rightShiftDamage = normalShift + boostedShift;
+
+      // 좌/우 클릭은 일반 계산
+      leftDamage = (60 / leftCool) * left;
+      rightDamage = (60 / rightCool) * right;
     }
 
-    // 직업무기 DPM
-    const jobWeaponDPM = leftDamage + rightDamage + shiftRightDamage;
-
+    const jobWeaponDPM = leftDamage + rightDamage + leftShiftDamage + rightShiftDamage;
     jobWeaponDPMs[job] = jobWeaponDPM;
+    console.log(`${job} DPM:`, jobWeaponDPM);
   });
 
   const handleWeaponSelection = (weaponId: string, level: number) => {
