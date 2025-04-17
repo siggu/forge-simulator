@@ -179,6 +179,10 @@ export default function HwansanPage() {
         // 가동률이 부족하면 환산 계산
         const efficiency = remainingAvailability * ((damage * (times ?? 1)) / manaCost);
 
+        // DPM과 오버된 가동률 대미지를 교체
+        const adjustedDPM = efficiency; // 환산된 대미지를 DPM으로 설정
+        const overRateDamage = dpm; // 기존 DPM을 오버된 가동률 대미지로 설정
+
         // 환산된 대미지로 무기 추가
         setSelectedWeapons((prev) => [
           ...prev,
@@ -187,8 +191,8 @@ export default function HwansanPage() {
             weaponName: item.name,
             level,
             activationRate: remainingAvailability, // 남은 가동률만 사용
-            efficiency, // 환산된 대미지 저장
-            dpm, // DPM 추가
+            efficiency: overRateDamage, // 오버된 가동률 대미지 저장
+            dpm: adjustedDPM, // 환산된 대미지를 DPM으로 저장
           },
         ]);
 
