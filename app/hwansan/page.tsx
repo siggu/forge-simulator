@@ -32,7 +32,9 @@ export default function HwansanPage() {
   const [manaPool, setManaPool] = useState('');
 
   // 마나 상태 관리
-  const [selectedWeapons, setSelectedWeapons] = useState([]);
+  const [selectedWeapons, setSelectedWeapons] = useState<
+    { weaponId: string; weaponName: string; level: number; activationRate: number; dpm: number; efficiency?: number }[]
+  >([]);
   const [remainingAvailability, setRemainingAvailability] = useState<number>(0);
 
   // 플레이어 가동률 계산
@@ -49,19 +51,28 @@ export default function HwansanPage() {
 
   // DPM -> 60/쿨타임*표기딜
 
-  const jobWeaponDPMs = {};
+  const jobWeaponDPMs: Record<string, number> = {};
   Object.keys(jobWeaponLevels).forEach((job) => {
     const level = jobWeaponLevels[job];
-    const weaponItem = jobItems.find((item) => item.id === job);
+    if (level === undefined) {
+      console.warn(`${job}의 레벨이 설정되지 않았습니다.`);
+      return;
+    }
 
+    const weaponItem = jobItems.find((item) => item.id === job);
     if (!weaponItem) {
       console.warn(`${job} 무기 정보를 찾을 수 없습니다.`);
       return;
     }
 
-    const damageInfo = weaponItem.damages[0];
+    const damageInfo = weaponItem.damages?.[0];
+    if (!damageInfo) {
+      console.warn(`${job}의 대미지 정보가 없습니다.`);
+      return;
+    }
+
     const left = damageInfo.left[level];
-    const right = damageInfo.right[level];
+    const right = damageInfo.right?.[level] ?? 0;
     const leftShift = damageInfo.left_shift?.[level];
     const rightShift = damageInfo.shift_right[level];
 
@@ -71,7 +82,7 @@ export default function HwansanPage() {
     const rightShiftCool = weaponItem.right_shift_cooldown;
 
     let leftDamage = (60 / leftCool) * left;
-    let rightDamage = (60 / rightCool) * right;
+    let rightDamage = rightCool ? (60 / rightCool) * right : 0;
     let leftShiftDamage = (60 / leftShiftCool) * leftShift;
     let rightShiftDamage = (60 / rightShiftCool) * rightShift;
 
@@ -110,17 +121,16 @@ export default function HwansanPage() {
 
       // 좌/우 클릭은 일반 계산
       leftDamage = (60 / leftCool) * left;
-      rightDamage = (60 / rightCool) * right;
+      rightDamage = (60 / (rightCool ?? 1)) * right;
     }
 
     const jobWeaponDPM = leftDamage + rightDamage + leftShiftDamage + rightShiftDamage;
     jobWeaponDPMs[job] = jobWeaponDPM;
-    console.log(`${job} DPM:`, jobWeaponDPM);
   });
 
   const handleWeaponSelection = (weaponId: string, level: number) => {
     const item = items.find((i) => i.id === weaponId);
-    const damageInfo = item?.damages[level];
+    const damageInfo = item?.damages?.[level];
     const times = item?.times;
 
     if (!item || !damageInfo) return;
@@ -131,7 +141,7 @@ export default function HwansanPage() {
     const activationRate = (60 / cooldown) * manaCost;
 
     // DPM 계산
-    const dpm = (60 / cooldown) * damage * times;
+    const dpm = (60 / cooldown) * damage * (times ?? 1);
 
     // 기존 무기가 선택된 경우 처리
     const existingWeaponIndex = selectedWeapons.findIndex((w) => w.weaponId === weaponId);
@@ -167,7 +177,7 @@ export default function HwansanPage() {
         setRemainingAvailability(newRemainingAvailability);
       } else {
         // 가동률이 부족하면 환산 계산
-        const efficiency = remainingAvailability * ((damage * times) / manaCost);
+        const efficiency = remainingAvailability * ((damage * (times ?? 1)) / manaCost);
 
         // 환산된 대미지로 무기 추가
         setSelectedWeapons((prev) => [
@@ -218,22 +228,27 @@ export default function HwansanPage() {
   // console.log('운명 무기 리스트', destinyAwakenings);
 
   // 발할라 쿨타임
-  const dragonSwordLeftCoolTime = destinyItems[0].damages[0].left_cooldown;
-  const dragonSwordRightCoolTime = destinyItems[0].damages[0].right_cooldown;
+  const dragonSwordLeftCoolTime = destinyItems?.[0]?.damages?.[0]?.left_cooldown ?? 0;
+  const dragonSwordRightCoolTime = destinyItems?.[0]?.damages?.[0]?.right_cooldown ?? 0;
   // 운명 무기(발할라) 대미지
   const dragonSwordLeftDamage =
-    (60 / dragonSwordLeftCoolTime) * (destinyItems[0].damages[0].left * destinyItems[0].damages[0].left_times);
+    (60 / dragonSwordLeftCoolTime) *
+    ((destinyItems?.[0]?.damages?.[0]?.left ?? 0) * (destinyItems?.[0]?.damages?.[0]?.left_times ?? 0));
   const dragonSwordRightDamage =
-    (60 / dragonSwordRightCoolTime) * (destinyItems[0].damages[0].right * destinyItems[0].damages[0].right_times);
+    (60 / dragonSwordRightCoolTime) *
+    ((destinyItems?.[0]?.damages?.[0]?.right ?? 0) * (destinyItems?.[0]?.damages?.[0]?.right_times ?? 0));
 
   // 올림푸스 쿨타임 대미지
-  const zeusSpearLeftCoolTime = destinyItems[1].damages[0].left_cooldown;
-  const zeusSpearRightCoolTime = destinyItems[1].damages[0].right_cooldown;
+  const zeusSpearLeftCoolTime = destinyItems?.[1]?.damages?.[0]?.left_cooldown ?? 0;
+  const zeusSpearRightCoolTime = destinyItems?.[1]?.damages?.[0]?.right_cooldown;
   // 운명 무기(올림푸스) 대미지
   const zeusSpearLeftDamage =
-    (60 / zeusSpearLeftCoolTime) * (destinyItems[1].damages[0].left * destinyItems[1].damages[0].left_times);
-  const zeusSpearRightDamage =
-    (60 / zeusSpearRightCoolTime) * (destinyItems[1].damages[0].right * destinyItems[1].damages[0].right_times);
+    (60 / zeusSpearLeftCoolTime) *
+    ((destinyItems?.[1]?.damages?.[0]?.left ?? 0) * (destinyItems?.[1]?.damages?.[0]?.left_times ?? 0));
+  const zeusSpearRightDamage = zeusSpearRightCoolTime
+    ? (60 / zeusSpearRightCoolTime) *
+      ((destinyItems?.[1]?.damages?.[0]?.right ?? 0) * (destinyItems?.[1]?.damages?.[0]?.right_times ?? 0))
+    : 0;
 
   // 길드 유대감 레벨
   const guildDamage = Number(guildAdditionalDamage) * 0.65 + Number(guildAdditionalDamage) * 0.4;
@@ -293,7 +308,7 @@ export default function HwansanPage() {
                 onChange={(e) => setJobWeaponLevels((prev) => ({ ...prev, [job.id]: Number(e.target.value) }))}
                 className='mt-2 bg-gray-700 text-white text-sm px-2 py-1 rounded w-full flex justify-end'
               >
-                {Array.from({ length: jobItems[0].damages[0].left.length }).map((_, level) => (
+                {Array.from({ length: jobItems[0]?.damages?.[0]?.left?.length ?? 0 }).map((_, level) => (
                   <option key={level} value={level}>
                     Lv.{level + 1}
                   </option>
