@@ -34,8 +34,8 @@
 - **무기 강화 리더보드**: 하루를 기준으로 초기화되는 랭킹 표시
   
     <img src='https://github.com/user-attachments/assets/05f2168f-5c46-4161-b330-4603b3f1c3ee' width='400px'/>
-  
-    ![image](https://github.com/user-attachments/assets/5eebcd88-9ff5-44cf-b641-8a9742066f89)
+    
+  ![리더보드 사진](https://github.com/user-attachments/assets/1de9053b-e194-4806-8214-57728c51418d)
 
 ### 2️⃣ 환산 계산기(특정 유저에게만 공개)
 - 특정 비밀번호를 입력해야만 환산 계산기 사용 가능
