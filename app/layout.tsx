@@ -27,6 +27,7 @@ export default function RootLayout({
     <html lang='en'>
       <head>
         {/* Google Analytics Script */}
+        <meta name='google-site-verification' content='ptwi9qcjNcNSLefzQrJl2MtzMsg_djljtWOYQoRY07k' />
         <Script strategy='afterInteractive' src='https://www.googletagmanager.com/gtag/js?id=G-BF8NW4Z37P' />
         <Script id='google-analytics' strategy='afterInteractive'>
           {`
@@ -38,10 +39,10 @@ export default function RootLayout({
             });
           `}
         </Script>
-      <link rel='manifest' href='/manifest.json' />
-      <meta name='theme-color' content='#317EFB' />
-      <link rel='icon' href='/icons/monkey.png' />
-      <link rel='apple-touch-icon' href='/icons/monkey.png' />
+        <link rel='manifest' href='/manifest.json' />
+        <meta name='theme-color' content='#317EFB' />
+        <link rel='icon' href='/icons/monkey.png' />
+        <link rel='apple-touch-icon' href='/icons/monkey.png' />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-900 text-white`}>
         {children}
