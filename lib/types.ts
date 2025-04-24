@@ -20,9 +20,9 @@ interface JobWeaponDamage {
 
 // 운명 무기 대미지
 interface DestinyWeaponDamage {
-  left: number;
+  left: number[];
   left_times: number;
-  left_cooldown: number;
+  left_cooldown: number[];
   right: number;
   right_times: number;
   right_cooldown: number;

@@ -22,7 +22,7 @@ export default function HwansanPage() {
   const [specialWeaponLevels, setSpecialWeaponLevels] = useState<Record<string, number>>({});
 
   // 운명 무기 각성 체크 여부
-  const [destinyAwakenings, setDestinyAwakenings] = useState<Record<string, boolean>>({});
+  const [destinyAwakenings, setDestinyAwakenings] = useState<Record<string, number>>({});
 
   // 추가 입력값들
   const [bossAdditionalDamage, setBossAdditionalDamage] = useState('');
@@ -231,29 +231,25 @@ export default function HwansanPage() {
   // 운명 무기 리스트
   // console.log('운명 무기 리스트', destinyAwakenings);
 
-  // 발할라 쿨타임
-  const dragonSwordLeftCoolTime = destinyItems?.[0]?.damages?.[0]?.left_cooldown ?? 0;
-  const dragonSwordRightCoolTime = destinyItems?.[0]?.damages?.[0]?.right_cooldown ?? 0;
-  // 운명 무기(발할라) 대미지
-  const dragonSwordLeftDamage =
-    (60 / dragonSwordLeftCoolTime) *
-    ((destinyItems?.[0]?.damages?.[0]?.left ?? 0) * (destinyItems?.[0]?.damages?.[0]?.left_times ?? 0));
-  const dragonSwordRightDamage =
-    (60 / dragonSwordRightCoolTime) *
-    ((destinyItems?.[0]?.damages?.[0]?.right ?? 0) * (destinyItems?.[0]?.damages?.[0]?.right_times ?? 0));
+  // 운명 무기 DPM 계산
+  const destinyWeaponDPM = useMemo(() => {
+    return destinyItems.reduce((total, job) => {
+      const selectedLevel = destinyAwakenings[job.id] ?? 0; // 선택된 각성 차수
+      if (selectedLevel > 0) {
+        const leftCoolTime = job.damages?.[0]?.left_cooldown?.[selectedLevel - 1] ?? 1;
+        const rightCoolTime = job.damages?.[0]?.right_cooldown ?? 1;
 
-  // 올림푸스 쿨타임 대미지
-  const zeusSpearLeftCoolTime = destinyItems?.[1]?.damages?.[0]?.left_cooldown ?? 0;
-  const zeusSpearRightCoolTime = destinyItems?.[1]?.damages?.[0]?.right_cooldown;
-  // 운명 무기(올림푸스) 대미지
-  const zeusSpearLeftDamage =
-    (60 / zeusSpearLeftCoolTime) *
-    ((destinyItems?.[1]?.damages?.[0]?.left ?? 0) * (destinyItems?.[1]?.damages?.[0]?.left_times ?? 0));
-  const zeusSpearRightDamage = zeusSpearRightCoolTime
-    ? (60 / zeusSpearRightCoolTime) *
-      ((destinyItems?.[1]?.damages?.[0]?.right ?? 0) * (destinyItems?.[1]?.damages?.[0]?.right_times ?? 0))
-    : 0;
+        const leftDamage =
+          (60 / leftCoolTime) *
+          ((job.damages?.[0]?.left?.[selectedLevel - 1] ?? 0) * (job.damages?.[0]?.left_times ?? 1));
+        const rightDamage =
+          (60 / rightCoolTime) * ((job.damages?.[0]?.right ?? 0) * (job.damages?.[0]?.right_times ?? 1));
 
+        return total + leftDamage + rightDamage;
+      }
+      return total;
+    }, 0);
+  }, [destinyAwakenings]);
   // 길드 유대감 레벨
   const guildDamage = Number(guildAdditionalDamage) * 0.65 + Number(guildAdditionalDamage) * 0.4;
 
@@ -268,28 +264,14 @@ export default function HwansanPage() {
 
   // 최종 DPM 계산
   const finalDPM = useMemo(() => {
-    const jobWeaponDPMValues = Number(Object.values(jobWeaponDPMs));
-
+    const jobWeaponDPMValues = Object.values(jobWeaponDPMs).reduce((sum, dpm) => sum + dpm, 0);
     const specialWeaponDPM = selectedWeapons.reduce((sum, weapon) => sum + weapon.dpm, 0);
-    const dragonSword = destinyAwakenings['dragon_sword_ef'] ? dragonSwordLeftDamage + dragonSwordRightDamage : 0;
-    const zeusSpear = destinyAwakenings['zeus_spear_ef'] ? zeusSpearLeftDamage + zeusSpearRightDamage : 0;
 
-    const totalDPM = jobWeaponDPMValues + dragonSword + zeusSpear + specialWeaponDPM;
+    const totalDPM = jobWeaponDPMValues + destinyWeaponDPM + specialWeaponDPM;
     const multiplier = (statDamage + guildDamage + divineDamage) / 100 + 1;
 
     return totalDPM * multiplier * 1.25;
-  }, [
-    jobWeaponDPMs,
-    dragonSwordLeftDamage,
-    dragonSwordRightDamage,
-    zeusSpearLeftDamage,
-    zeusSpearRightDamage,
-    selectedWeapons,
-    statDamage,
-    guildDamage,
-    divineDamage,
-    destinyAwakenings,
-  ]);
+  }, [jobWeaponDPMs, destinyWeaponDPM, selectedWeapons, statDamage, guildDamage, divineDamage]);
 
   return (
     <div className='min-h-screen bg-gray-900 text-white p-4'>
@@ -422,23 +404,36 @@ export default function HwansanPage() {
         {/* 운명 무기 */}
         <div className='text-2xl'>운명 무기</div>
         <div className='flex flex-wrap gap-4'>
-          {destinyItems?.map((job, index) => (
-            <div
-              key={`${index}_${job.id}`}
-              className='group flex flex-col items-center rounded bg-gray-800 p-4 w-[150px]'
-            >
-              {/* 체크박스 */}
-              <label className='flex items-center gap-2 text-sm mt-2 cursor-pointer'>
-                <input
-                  type='checkbox'
-                  checked={destinyAwakenings[job.id] ?? false}
-                  onChange={(e) => setDestinyAwakenings((prev) => ({ ...prev, [job.id]: e.target.checked }))}
-                  className='accent-green-500 w-4 h-4'
-                />
-              </label>
-              <span className='mt-1 text-white'>{job.name} 각성</span>
-            </div>
-          ))}
+          {destinyItems?.map((job, index) => {
+            const selectedLevel = destinyAwakenings[job.id] ?? 0; // 선택된 각성 차수
+
+            return (
+              <div
+                key={`${index}_${job.id}`}
+                className='group flex flex-col items-center rounded bg-gray-800 p-4 w-[150px]'
+              >
+                {/* 운명 무기 이름 */}
+                <span className='text-white font-bold'>{job.name}</span>
+
+                {/* 각성 단계 선택 */}
+                <select
+                  value={selectedLevel}
+                  onChange={(e) => {
+                    const level = Number(e.target.value);
+                    setDestinyAwakenings((prev) => ({ ...prev, [job.id]: level }));
+                  }}
+                  className='mt-2 bg-gray-700 text-white text-sm px-2 py-1 rounded w-full'
+                >
+                  <option value={0}>각성 없음</option>
+                  {Array.from({ length: job.damages?.[0]?.left_cooldown?.length ?? 0 }).map((_, level) => (
+                    <option key={level + 1} value={level + 1}>
+                      각성+{level + 1}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            );
+          })}
         </div>
 
         {/* 보스 추가 대미지 */}

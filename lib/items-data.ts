@@ -782,7 +782,8 @@ export const jobItems: JobWeaponItem[] = [
     damages: [
       {
         left: [216, 227, 238, 247, 258, 269, 278, 289, 300, 321, 331, 342, 352, 363, 373],
-        right: [270, 283, 297, 309, 322, 336, 348, 289, 375, 401, 414, 427, 440, 453, 466],
+        // right: [270, 283, 297, 309, 322, 336, 348, 289, 375, 401, 414, 427, 440, 453, 466],
+        right: [351, 363, 376, 387, 398, 408, 418, 428, 437, 444, 452, 458, 463, 468, 473],
         left_shift: [1652, 1715, 1772, 1835, 1892, 1948, 2005, 2058, 2109, 2209, 2257, 2304, 2350, 2395, 2440],
         shift_right: [2013, 2167, 2310, 2475, 2629, 2783, 2948, 3102, 3256, 3566, 3721, 3876, 4031, 4186, 4341],
         passive_bonus: 15,
@@ -817,9 +818,9 @@ export const destinyItems: DestinyItem[] = [
     image: '/destiny/dragon_sword_ef.png',
     damages: [
       {
-        left: 1418,
+        left: [1418, 1702, 2042, 2450],
         left_times: 2,
-        left_cooldown: 52,
+        left_cooldown: [52, 47, 42, 35],
         right: 882,
         right_times: 2,
         right_cooldown: 14,
@@ -833,9 +834,9 @@ export const destinyItems: DestinyItem[] = [
     image: '/destiny/zeus_spear_ef.png',
     damages: [
       {
-        left: 3205,
+        left: [3205, 3846, 4615, 5538],
         left_times: 1,
-        left_cooldown: 60,
+        left_cooldown: [60, 54, 48, 42],
         right: 1099,
         right_times: 2,
         right_cooldown: 19,
