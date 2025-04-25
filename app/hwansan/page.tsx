@@ -113,19 +113,31 @@ export default function HwansanPage() {
       leftDamage = (60 / (leftCool * 3)) * (atk1 + atk2 + atk3);
     }
 
-    // 메이지 스택 기반 강화 계산 (shift + 우클릭만 적용)
+    // 메이지 딜 구조 계산
     if (job === '메이지') {
-      const normalShift = (60 / rightShiftCool) * rightShift * 0.333; // 일반
-      const boostedShift = (60 / rightShiftCool) * (rightShift * 1.3) * 0.667; // 스택
-      rightShiftDamage = normalShift + boostedShift;
+      const stackMultiplier = 1.3; // 스택 사용 시 대미지 30% 증가
+      const stackUsageRate = 0.5; // 스택 사용 비율 (50% 스킬 강화)
 
-      // 좌/우 클릭은 일반 계산
+      // 좌클릭: 아케인 슬래시
       leftDamage = (60 / leftCool) * left;
-      rightDamage = (60 / (rightCool ?? 1)) * right;
+
+      // 쉬프트+좌클릭: 메테오 (스택 사용)
+      const normalLeftShift = (60 / leftShiftCool) * leftShift * (1 - stackUsageRate); // 일반 대미지
+      const boostedLeftShift = (60 / leftShiftCool) * (leftShift * stackMultiplier) * stackUsageRate; // 강화 대미지
+      leftShiftDamage = normalLeftShift + boostedLeftShift;
+
+      // 쉬프트+우클릭: 인페르노 체인 (스택 사용)
+      const normalRightShift = (60 / rightShiftCool) * rightShift * (1 - stackUsageRate); // 일반 대미지
+      const boostedRightShift = (60 / rightShiftCool) * (rightShift * stackMultiplier) * stackUsageRate; // 강화 대미지
+      rightShiftDamage = normalRightShift + boostedRightShift;
+
+      // 우클릭: 블링크 (딜 계산 제외)
+      rightDamage = 0; // 블링크는 이동 스킬로 대미지 없음
     }
 
     const jobWeaponDPM = leftDamage + rightDamage + leftShiftDamage + rightShiftDamage;
     jobWeaponDPMs[job] = jobWeaponDPM;
+    console.log(jobWeaponDPMs);
   });
 
   const handleWeaponSelection = (weaponId: string, level: number) => {
