@@ -1,4 +1,5 @@
 import { ItemCard } from '@/components/item-card';
+import { categoryColorMap, categoryTitleMap } from '@/constants/categoryMap';
 import { items } from '@/lib/items-data';
 import Link from 'next/link';
 import { use } from 'react';
@@ -9,18 +10,6 @@ export default function ItemsPage({ params }: { params: Promise<{ category: stri
   console.log('Received params:', category); // { category: "hero" } 같은 값이 정상적으로 찍힘
 
   const categoryItems = items.filter((item) => item.category === category);
-
-  const categoryTitleMap: Record<string, string> = {
-    hero: '영웅 무기',
-    legendary: '전설 무기',
-    mortal: '필멸 무기',
-  };
-
-  const categoryColorMap: Record<string, string> = {
-    hero: 'text-purple-400',
-    legendary: 'text-yellow-400',
-    mortal: 'text-red-400',
-  };
 
   return (
     <div className='min-h-screen bg-gray-900 text-white p-4'>
