@@ -2,6 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+}
+
 export default function InstallPWAButton() {
   const [deferredPrompt, setDeferredPrompt] = useState<Event | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
@@ -23,9 +28,8 @@ export default function InstallPWAButton() {
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const promptEvent = deferredPrompt as any;
-    promptEvent.prompt();
+    const promptEvent = deferredPrompt as BeforeInstallPromptEvent;
+    await promptEvent.prompt();
 
     const { outcome } = await promptEvent.userChoice;
     console.log(`사용자 설치 결과: ${outcome}`);

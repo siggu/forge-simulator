@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang='ko'>
       <head>
         {/* Google Verification */}
         <meta name='google-site-verification' content='ptwi9qcjNcNSLefzQrJl2MtzMsg_djljtWOYQoRY07k' />
@@ -46,7 +46,7 @@ export default function RootLayout({
         <meta property='og:type' content='website' />
         <meta property='og:title' content='원숭이 시뮬레이터 - 무기 강화 · 확률 시뮬레이션' />
         <meta property='og:description' content='게임 속 무기 강화, 열쇠 뽑기 등을 실제처럼 테스트해보세요!' />
-        <meta property='og:image' content='https://forge-simulator.vercel.app/og-image.png' />
+        <meta property='og:image' content='https://forge-simulator.vercel.app/icons/monkey.png' />
         <meta property='og:url' content='https://forge-simulator.vercel.app/' />
         <meta property='og:site_name' content='원숭이 시뮬레이터' />
         <meta property='og:locale' content='ko_KR' />
