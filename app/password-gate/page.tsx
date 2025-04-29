@@ -7,10 +7,26 @@ export default function PasswordGatePage() {
   const [password, setPassword] = useState('');
   const router = useRouter();
 
-  const handleSubmit = () => {
-    if (password === process.env.NEXT_PUBLIC_HWANSAN_ENTER_PASSWORD) {
-      localStorage.setItem('access_granted', 'true');
-      router.push('/hwansan'); // 비밀 페이지로 이동
+  // const handleSubmit = async () => {
+  //   if (password === process.env.NEXT_PUBLIC_HWANSAN_ENTER_PASSWORD) {
+  //     document.cookie = 'access_granted=true; path=/; max-age=3600; samesite=strict';
+  //     router.push('/hwansan');
+  //   } else {
+  //     alert('비밀번호가 틀렸습니다.');
+  //   }
+  // };
+
+  const handleSubmit = async () => {
+    const res = await fetch('/api/password-gate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password }),
+    });
+
+    if (res.ok) {
+      router.push('/hwansan');
     } else {
       alert('비밀번호가 틀렸습니다.');
     }
