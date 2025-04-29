@@ -2,7 +2,6 @@
 
 import { destinyItems, items, jobItems } from '@/lib/items-data';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 const heroItems = items.filter((item) => item.category === 'hero');
@@ -16,8 +15,6 @@ const specialWeaponGroups = [
 ];
 
 export default function HwansanClient() {
-  const router = useRouter();
-
   // 직업 무기 레벨
   const [jobWeaponLevels, setJobWeaponLevels] = useState<Record<string, number>>({});
 
