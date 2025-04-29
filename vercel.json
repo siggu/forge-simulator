@@ -1,12 +1,8 @@
 {
   "crons": [
     {
-      "path": "api/update-password",
-      "schedule": "0 15 * * 0"
-    },
-    {
-      "path": "api/update-password",
-      "schedule": "* * * * *"
+      "path": "/api/update-password",
+      "schedule": "10 7 * * 1"
     }
   ]
 }
