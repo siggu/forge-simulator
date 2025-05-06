@@ -1,6 +1,7 @@
 'use client';
 
 import GachaCard from '@/components/gacha-card';
+import { categoryColorMap, categoryTitleMap } from '@/constants/categoryMap';
 import { gachaItems } from '@/lib/items-data';
 import Link from 'next/link';
 import { use } from 'react';
@@ -9,18 +10,6 @@ export default function GachaWeapon({ params }: { params: Promise<{ category: st
   const { category } = use(params);
 
   const categoryItems = gachaItems.filter((item) => item.category === category);
-
-  const categoryTitleMap: Record<string, string> = {
-    mystery: '신비로운 열쇠',
-    hero: '영웅 열쇠',
-    legendary: '전설 열쇠',
-  };
-
-  const categoryColorMap: Record<string, string> = {
-    mystery: 'text-red-400',
-    hero: 'text-purple-400',
-    legendary: 'text-yellow-400',
-  };
 
   return (
     <div className='min-h-screen bg-gray-900 text-white p-4'>

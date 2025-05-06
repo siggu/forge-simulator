@@ -5,16 +5,7 @@ import Image from 'next/image';
 import { ForgeWeaponList } from '@/components/forge-weapon-list';
 import Link from 'next/link';
 import InstallPWAButton from '@/components/install-pwa-button';
-
-const randomTexts = [
-  'ㅋㅋ 원숭이',
-  '쫄?',
-  '넌 무파가 딱이야 ㅇㅇ',
-  '쌀먹이나 하러 가세요라',
-  '언제 정신 차릴래?',
-  '원숭이가 더 건실하겠다 ㅇㅇ',
-  '넌 걍 운이 없다',
-];
+import randomTexts from '@/constants/randomText';
 
 export default function Home() {
   const [randomText, setRandomText] = useState(randomTexts[0]);
