@@ -104,7 +104,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
           disabled={!nickname || isDuplicate || isSubmitting}
           className={`px-4 py-2 rounded w-full text-white mb-2 ${
             !nickname || isDuplicate || isSubmitting
-              ? 'bg-gray-400 cursor-not-allowed'
+              ? 'bg-zinc-400 cursor-not-allowed'
               : 'bg-blue-600 hover:bg-blue-700'
           }`}
         >
@@ -113,7 +113,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
 
         <button
           onClick={handleModalClose}
-          className='px-4 py-2 rounded w-full text-gray-700 bg-gray-200 hover:bg-gray-300'
+          className='px-4 py-2 rounded w-full text-zinc-700 bg-zinc-200 hover:bg-zinc-300'
         >
           닫기(esc)
         </button>

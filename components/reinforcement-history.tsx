@@ -23,7 +23,7 @@ const resultConfig = {
   },
   fail: {
     text: '유지',
-    color: 'text-gray-400',
+    color: 'text-zinc-400',
   },
 };
 
@@ -33,14 +33,14 @@ export function ReinforcementHistory({ history }: ReinforcementHistoryProps) {
   }
 
   return (
-    <div className='bg-gray-700 rounded-lg p-4 mt-4'>
+    <div className='bg-zinc-700 rounded-lg p-4 mt-4'>
       <h3 className='text-lg font-semibold mb-2'>강화 기록</h3>
       <div className='max-h-40 overflow-y-auto'>
         {history
           .slice()
           .reverse()
           .map((entry, index) => (
-            <div key={index} className='flex justify-between py-1 border-b border-gray-600 last:border-0'>
+            <div key={index} className='flex justify-between py-1 border-b border-zinc-600 last:border-0'>
               <span>
                 {new Date(entry.timestamp).toLocaleTimeString()} -
                 {entry.result === 'success'

@@ -33,7 +33,7 @@ export default function PasswordGatePage() {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen gap-4'>
+    <div className='min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900 text-white flex flex-col items-center justify-center h-screen gap-4'>
       <h1 className='text-xl font-bold'>비밀번호를 입력하세요</h1>
       <input type='password' className='border p-2' value={password} onChange={(e) => setPassword(e.target.value)} />
       <button onClick={handleSubmit} className='bg-blue-500 text-white px-4 py-2 rounded'>

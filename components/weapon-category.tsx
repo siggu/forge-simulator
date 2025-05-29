@@ -8,10 +8,10 @@ interface WeaponCategoryProps {
 }
 
 const colorMap = {
-  blue: 'bg-blue-900 hover:bg-blue-800 text-blue-300 border-blue-600',
-  purple: 'bg-purple-900 hover:bg-purple-800 text-purple-300 border-purple-600',
-  yellow: 'bg-yellow-900 hover:bg-yellow-800 text-yellow-300 border-yellow-600',
-  red: 'bg-red-900 hover:bg-red-800 text-red-300 border-red-600',
+  blue: 'bg-blue-600 hover:bg-blue-500 text-white border-blue-700',
+  purple: 'bg-purple-600 hover:bg-purple-500 text-white border-purple-700',
+  yellow: 'bg-yellow-500 hover:bg-yellow-400 text-black border-yellow-600',
+  red: 'bg-red-600 hover:bg-red-500 text-white border-red-700',
 };
 
 export function WeaponCategory({ title, color, href, onClick }: WeaponCategoryProps) {
@@ -19,9 +19,9 @@ export function WeaponCategory({ title, color, href, onClick }: WeaponCategoryPr
     <div onClick={onClick}>
       <Link
         href={href}
-        className={`${colorMap[color]} p-8 rounded-lg border-2 transition-all duration-300 transform hover:scale-105 flex items-center justify-center`}
+        className={`${colorMap[color]} p-8 rounded-xl border-2 shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center`}
       >
-        <h2 className='text-3xl font-bold text-center'>{title}</h2>
+        <h2 className='text-3xl font-bold text-center tracking-tight'>{title}</h2>
       </Link>
     </div>
   );

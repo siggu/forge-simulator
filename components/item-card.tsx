@@ -9,44 +9,38 @@ interface ItemCardProps {
   item: Item;
 }
 
+const categoryStyleMap: Record<string, string> = {
+  hero: 'border-purple-600 bg-purple-900/40 hover:ring-purple-400',
+  legendary: 'border-yellow-500 bg-yellow-900/40 hover:ring-yellow-300',
+  mortal: 'border-red-600 bg-red-900/40 hover:ring-red-400',
+};
+
 export function ItemCard({ item }: ItemCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const categoryColorMap: Record<string, string> = {
-    hero: 'border-purple-600 bg-purple-900/50',
-    legendary: 'border-yellow-600 bg-yellow-900/50',
-    mortal: 'border-red-600 bg-red-900/50',
-  };
+  const categoryClass = categoryStyleMap[item.category] || 'border-zinc-500 bg-zinc-800';
 
   return (
     <Link
       href={`/reinforce/${item.id}`}
-      className={`relative rounded-lg border-2 ${
-        categoryColorMap[item.category]
-      } p-4 transition-all duration-300 hover:scale-105 cursor-pointer`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className={`group relative p-4 rounded-xl border-2 ${categoryClass} transition-all duration-300 hover:scale-105 hover:ring-2 shadow-md`}
     >
-      <div className='flex flex-col items-center'>
-        <Image
-          src={item.images[0] || '/placeholder.svg'}
-          alt={item.name}
-          width={120}
-          height={120}
-          className='object-contain h-32'
-        />
-        <h3 className='mt-4 text-xl font-semibold text-center'>{item.name}</h3>
-      </div>
-
-      {isHovered && (
-        <div className='absolute inset-0 bg-black/80 rounded-lg p-4 flex flex-col justify-center'>
-          <h3 className='text-xl font-bold mb-2'>{item.name}</h3>
-          <p className='text-gray-300 mb-2'>{item.description}</p>
-          <div className='text-sm'>
-            <p>최대 강화 단계: {item.maxLevel}</p>
-          </div>
+      <div className='flex flex-col items-center justify-center'>
+        <div className='w-full aspect-square relative'>
+          <Image
+            src={item.images[0] || '/placeholder.svg'}
+            alt={item.name}
+            fill
+            className='object-contain rounded-md'
+            sizes='(max-width: 768px) 100px, 120px'
+          />
         </div>
-      )}
+        <h3 className='mt-4 text-center text-lg font-bold tracking-tight text-white group-hover:text-yellow-100'>
+          {item.name}
+        </h3>
+      </div>
     </Link>
   );
 }

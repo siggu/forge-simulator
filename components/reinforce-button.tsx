@@ -23,7 +23,7 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
     return (
       <div className='mt-8'>
         {/* Fixed height container for probability info to prevent button from moving */}
-        <div className='h-[160px] bg-gray-700 rounded-lg p-4 mb-4'>
+        <div className='h-[160px] bg-zinc-700 rounded-lg p-4 mb-4'>
           <h3 className='text-lg font-semibold mb-2'>강화 확률</h3>
           {showProbability ? (
             <div className='space-y-1'>
@@ -35,7 +35,7 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
               {level < 8 ? (
                 <div className='flex justify-between'>
                   <span>실패 (유지)</span>
-                  <span className='text-gray-400'>{failRate}%</span>
+                  <span className='text-zinc-400'>{failRate}%</span>
                 </div>
               ) : (
                 <div className='flex justify-between'>
@@ -53,7 +53,7 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
             </div>
           ) : (
             <div className='flex items-center justify-center h-[100px]'>
-              <p className='text-gray-400'>최대 강화 단계에 도달했습니다.</p>
+              <p className='text-zinc-400'>최대 강화 단계에 도달했습니다.</p>
             </div>
           )}
         </div>
@@ -65,7 +65,7 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
           className={`w-full py-4 px-6 rounded-lg text-xl font-bold transition-all duration-300
             ${
               disabled
-                ? 'bg-gray-600 cursor-not-allowed'
+                ? 'bg-zinc-600 cursor-not-allowed'
                 : 'bg-blue-600 hover:bg-blue-500 active:transform active:scale-95'
             }`}
         >
