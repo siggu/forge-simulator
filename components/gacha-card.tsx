@@ -81,7 +81,7 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
           <div className='flex gap-9'>
             {items.map((item) => (
               <div key={`list-${item.id}`} className='flex flex-col items-center w-24 flex-shrink-0'>
-                <div className='relative w-20 aspect-square bg-gray-100 rounded shadow-sm'>
+                <div className='relative w-20 aspect-square bg-zinc-100 rounded shadow-sm'>
                   <Image src={item.image} alt={item.name} fill className='object-contain p-1' sizes='80px' />
                 </div>
                 <div className='text-xs text-center mt-1 truncate'>{item.name}</div>

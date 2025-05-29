@@ -232,7 +232,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
                 variant='outline'
                 onClick={() => jumpToLevel(lvl)}
                 disabled={level >= lvl}
-                className='flex items-center justify-center gap-2 border border-gray-300 text-black bg-white hover:bg-gray-100 transition-colors'
+                className='flex items-center justify-center gap-2 border border-zinc-300 text-black bg-white hover:bg-zinc-100 transition-colors'
               >
                 {lvl}강 (단축키: {lvl - 10})
               </Button>
