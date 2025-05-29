@@ -228,6 +228,7 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
           <div className='grid grid-cols-2 md:grid-cols-4 gap-8 my-8'>
             {[11, 12, 13, 14].map((lvl) => (
               <Button
+                key={lvl}
                 variant='outline'
                 onClick={() => jumpToLevel(lvl)}
                 disabled={level >= lvl}

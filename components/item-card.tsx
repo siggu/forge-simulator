@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Item } from '@/lib/types';
@@ -16,15 +15,11 @@ const categoryStyleMap: Record<string, string> = {
 };
 
 export function ItemCard({ item }: ItemCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
   const categoryClass = categoryStyleMap[item.category] || 'border-zinc-500 bg-zinc-800';
 
   return (
     <Link
       href={`/reinforce/${item.id}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className={`group relative p-4 rounded-xl border-2 ${categoryClass} transition-all duration-300 hover:scale-105 hover:ring-2 shadow-md`}
     >
       <div className='flex flex-col items-center justify-center'>

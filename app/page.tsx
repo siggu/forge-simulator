@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ForgeWeaponList } from '@/components/forge-weapon-list';
 import Link from 'next/link';
 import InstallPWAButton from '@/components/install-pwa-button';
 import randomTexts from '@/constants/randomText';

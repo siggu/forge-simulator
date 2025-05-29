@@ -51,94 +51,98 @@ export default function HwansanClient() {
 
   // DPM -> 60/쿨타임*표기딜
 
-  const jobWeaponDPMs: Record<string, number> = {};
-  Object.keys(jobWeaponLevels).forEach((job) => {
-    const level = jobWeaponLevels[job];
-    if (level === undefined) {
-      console.warn(`${job}의 레벨이 설정되지 않았습니다.`);
-      return;
-    }
+  const jobWeaponDPMs = useMemo(() => {
+    const result: Record<string, number> = {};
 
-    const weaponItem = jobItems.find((item) => item.id === job);
-    if (!weaponItem) {
-      console.warn(`${job} 무기 정보를 찾을 수 없습니다.`);
-      return;
-    }
+    Object.keys(jobWeaponLevels).forEach((job) => {
+      const level = jobWeaponLevels[job];
+      if (level === undefined) {
+        console.warn(`${job}의 레벨이 설정되지 않았습니다.`);
+        return;
+      }
 
-    const damageInfo = weaponItem.damages?.[0];
-    if (!damageInfo) {
-      console.warn(`${job}의 대미지 정보가 없습니다.`);
-      return;
-    }
+      const weaponItem = jobItems.find((item) => item.id === job);
+      if (!weaponItem) {
+        console.warn(`${job} 무기 정보를 찾을 수 없습니다.`);
+        return;
+      }
 
-    const left = damageInfo.left[level];
-    const right = damageInfo.right?.[level] ?? 0;
-    const leftShift = damageInfo.left_shift?.[level];
-    const rightShift = damageInfo.shift_right[level];
+      const damageInfo = weaponItem.damages?.[0];
+      if (!damageInfo) {
+        console.warn(`${job}의 대미지 정보가 없습니다.`);
+        return;
+      }
 
-    const leftCool = weaponItem.left_cooldown;
-    const rightCool = weaponItem.right_cooldown;
-    const leftShiftCool = weaponItem.left_shift_cooldown;
-    const rightShiftCool = weaponItem.right_shift_cooldown;
+      const left = damageInfo.left[level];
+      const right = damageInfo.right?.[level] ?? 0;
+      const leftShift = damageInfo.left_shift?.[level];
+      const rightShift = damageInfo.shift_right[level];
 
-    let leftDamage = (60 / leftCool) * left;
-    let rightDamage = rightCool ? (60 / rightCool) * right : 0;
-    let leftShiftDamage = (60 / leftShiftCool) * leftShift;
-    let rightShiftDamage = (60 / rightShiftCool) * rightShift;
+      const leftCool = weaponItem.left_cooldown;
+      const rightCool = weaponItem.right_cooldown;
+      const leftShiftCool = weaponItem.left_shift_cooldown;
+      const rightShiftCool = weaponItem.right_shift_cooldown;
 
-    // 블레이드 좌클릭 패시브
-    if (job === '블레이드' && damageInfo.left_bonus) {
-      leftDamage *= 1.15;
-    }
+      let leftDamage = (60 / leftCool) * left;
+      let rightDamage = rightCool ? (60 / rightCool) * right : 0;
+      let leftShiftDamage = (60 / leftShiftCool) * leftShift;
+      let rightShiftDamage = (60 / rightShiftCool) * rightShift;
 
-    // 워리어 계열 패시브
-    if (job === '워리어' && damageInfo.passive_bonus) {
-      leftDamage *= 1.1275;
-      rightDamage *= 1.1275;
-      leftShiftDamage *= 1.15;
-      rightShiftDamage *= 1.15;
-    }
+      // 블레이드 좌클릭 패시브
+      if (job === '블레이드' && damageInfo.left_bonus) {
+        leftDamage *= 1.15;
+      }
 
-    // 프로스트 계열 패시브
-    if (job === '프로스트' && damageInfo.additional_damage) {
-      const add = damageInfo.additional_damage[level];
-      rightDamage += add;
-      rightShiftDamage += add;
-      leftShiftDamage += add;
+      // 워리어 계열 패시브
+      if (job === '워리어' && damageInfo.passive_bonus) {
+        leftDamage *= 1.1275;
+        rightDamage *= 1.1275;
+        leftShiftDamage *= 1.15;
+        rightShiftDamage *= 1.15;
+      }
 
-      // 좌클릭은 3타마다 50% 추가 대미지
-      const atk1 = left;
-      const atk2 = left;
-      const atk3 = left * 1.5;
-      leftDamage = (60 / (leftCool * 3)) * (atk1 + atk2 + atk3);
-    }
+      // 프로스트 계열 패시브
+      if (job === '프로스트' && damageInfo.additional_damage) {
+        const add = damageInfo.additional_damage[level];
+        rightDamage += add;
+        rightShiftDamage += add;
+        leftShiftDamage += add;
 
-    // 메이지 딜 구조 계산
-    if (job === '메이지') {
-      const stackMultiplier = 1.3; // 스택 사용 시 대미지 30% 증가
-      const stackUsageRate = 0.5; // 스택 사용 비율 (50% 스킬 강화)
+        // 좌클릭은 3타마다 50% 추가 대미지
+        const atk1 = left;
+        const atk2 = left;
+        const atk3 = left * 1.5;
+        leftDamage = (60 / (leftCool * 3)) * (atk1 + atk2 + atk3);
+      }
 
-      // 좌클릭: 아케인 슬래시
-      leftDamage = (60 / leftCool) * left;
+      // 메이지 딜 구조 계산
+      if (job === '메이지') {
+        const stackMultiplier = 1.3; // 스택 사용 시 대미지 30% 증가
+        const stackUsageRate = 0.5; // 스택 사용 비율 (50% 스킬 강화)
 
-      // 쉬프트+좌클릭: 메테오 (스택 사용)
-      const normalLeftShift = (60 / leftShiftCool) * leftShift * (1 - stackUsageRate); // 일반 대미지
-      const boostedLeftShift = (60 / leftShiftCool) * (leftShift * stackMultiplier) * stackUsageRate; // 강화 대미지
-      leftShiftDamage = normalLeftShift + boostedLeftShift;
+        // 좌클릭: 아케인 슬래시
+        leftDamage = (60 / leftCool) * left;
 
-      // 쉬프트+우클릭: 인페르노 체인 (스택 사용)
-      const normalRightShift = (60 / rightShiftCool) * rightShift * (1 - stackUsageRate); // 일반 대미지
-      const boostedRightShift = (60 / rightShiftCool) * (rightShift * stackMultiplier) * stackUsageRate; // 강화 대미지
-      rightShiftDamage = normalRightShift + boostedRightShift;
+        // 쉬프트+좌클릭: 메테오 (스택 사용)
+        const normalLeftShift = (60 / leftShiftCool) * leftShift * (1 - stackUsageRate); // 일반 대미지
+        const boostedLeftShift = (60 / leftShiftCool) * (leftShift * stackMultiplier) * stackUsageRate; // 강화 대미지
+        leftShiftDamage = normalLeftShift + boostedLeftShift;
 
-      // 우클릭: 블링크 (딜 계산 제외)
-      rightDamage = 0; // 블링크는 이동 스킬로 대미지 없음
-    }
+        // 쉬프트+우클릭: 인페르노 체인 (스택 사용)
+        const normalRightShift = (60 / rightShiftCool) * rightShift * (1 - stackUsageRate); // 일반 대미지
+        const boostedRightShift = (60 / rightShiftCool) * (rightShift * stackMultiplier) * stackUsageRate; // 강화 대미지
+        rightShiftDamage = normalRightShift + boostedRightShift;
 
-    const jobWeaponDPM = leftDamage + rightDamage + leftShiftDamage + rightShiftDamage;
-    jobWeaponDPMs[job] = jobWeaponDPM;
-    console.log(jobWeaponDPMs);
-  });
+        // 우클릭: 블링크 (딜 계산 제외)
+        rightDamage = 0; // 블링크는 이동 스킬로 대미지 없음
+      }
+
+      const jobWeaponDPM = leftDamage + rightDamage + leftShiftDamage + rightShiftDamage;
+      result[job] = jobWeaponDPM;
+    });
+
+    return result;
+  }, [jobWeaponLevels]);
 
   const handleWeaponSelection = (weaponId: string, level: number) => {
     const item = items.find((i) => i.id === weaponId);
