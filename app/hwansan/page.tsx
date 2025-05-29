@@ -296,7 +296,7 @@ export default function HwansanPage() {
   }, [jobWeaponDPMs, destinyWeaponDPM, selectedWeapons, statDamage, guildDamage, divineDamage]);
 
   return (
-    <div className='min-h-screen bg-gray-900 text-white p-4'>
+    <div className='min-h-screen bg-zinc-900 text-white p-4'>
       <div className='container mx-auto max-w-7xl'>
         <Link href='/' className='text-blue-400 hover:underline mb-4 inline-block'>
           ← 메인으로 돌아가기
@@ -309,12 +309,12 @@ export default function HwansanPage() {
           {jobItems?.map((job, index) => (
             <div
               key={`${index}_${job.id}`}
-              className='group flex flex-col items-center rounded bg-gray-800 p-2 w-[150px]'
+              className='group flex flex-col items-center rounded bg-zinc-800 p-2 w-[150px]'
             >
               <select
                 value={jobWeaponLevels[job.id] ?? 0}
                 onChange={(e) => setJobWeaponLevels((prev) => ({ ...prev, [job.id]: Number(e.target.value) }))}
-                className='mt-2 bg-gray-700 text-white text-sm px-2 py-1 rounded w-full flex justify-end'
+                className='mt-2 bg-zinc-700 text-white text-sm px-2 py-1 rounded w-full flex justify-end'
               >
                 {Array.from({ length: jobItems[0]?.damages?.[0]?.left?.length ?? 0 }).map((_, level) => (
                   <option key={level} value={level}>
@@ -342,7 +342,7 @@ export default function HwansanPage() {
         {/* 추가된 무기 목록 */}
         <div className='mt-6'>
           <h2 className='text-xl font-bold mb-2'>🔑 추가된 무기 목록</h2>
-          <div className='grid grid-cols-7 gap-4 p-2 bg-gray-800 text-white font-semibold border-b border-gray-500'>
+          <div className='grid grid-cols-7 gap-4 p-2 bg-zinc-800 text-white font-semibold border-b border-zinc-500'>
             <div>무기 이름</div>
             <div>레벨</div>
             <div>가동률</div>
@@ -355,7 +355,7 @@ export default function HwansanPage() {
             .map((weapon, index) => (
               <div
                 key={`${index}_${weapon.weaponId}`}
-                className='grid grid-cols-7 gap-4 p-2 border-b border-gray-700 text-sm'
+                className='grid grid-cols-7 gap-4 p-2 border-b border-zinc-700 text-sm'
               >
                 <div>{weapon.weaponName}</div>
                 <div>Lv.{weapon.level}</div>
@@ -384,7 +384,7 @@ export default function HwansanPage() {
               {group.items?.map((item, index) => (
                 <div
                   key={`${index}_${item.id}`}
-                  className='group flex flex-col items-center rounded bg-gray-800 p-2 w-[150px]'
+                  className='group flex flex-col items-center rounded bg-zinc-800 p-2 w-[150px]'
                 >
                   {/* 레벨 입력 */}
                   <input
@@ -399,7 +399,7 @@ export default function HwansanPage() {
                       }
                     }}
                     placeholder='레벨 입력'
-                    className='mt-2 text-sm px-2 py-1 rounded w-full bg-gray-700 text-white text-center'
+                    className='mt-2 text-sm px-2 py-1 rounded w-full bg-zinc-700 text-white text-center'
                   />
                   <span className='mt-2'>{item.name}</span>
 
@@ -432,7 +432,7 @@ export default function HwansanPage() {
             return (
               <div
                 key={`${index}_${job.id}`}
-                className='group flex flex-col items-center rounded bg-gray-800 p-4 w-[150px]'
+                className='group flex flex-col items-center rounded bg-zinc-800 p-4 w-[150px]'
               >
                 {/* 운명 무기 이름 */}
                 <span className='text-white font-bold'>{job.name}</span>
@@ -444,7 +444,7 @@ export default function HwansanPage() {
                     const level = Number(e.target.value);
                     setDestinyAwakenings((prev) => ({ ...prev, [job.id]: level }));
                   }}
-                  className='mt-2 bg-gray-700 text-white text-sm px-2 py-1 rounded w-full'
+                  className='mt-2 bg-zinc-700 text-white text-sm px-2 py-1 rounded w-full'
                 >
                   <option value={0}>각성 없음</option>
                   {Array.from({ length: job.damages?.[0]?.left_cooldown?.length ?? 0 }).map((_, level) => (

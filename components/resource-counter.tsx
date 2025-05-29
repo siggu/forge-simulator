@@ -26,7 +26,7 @@ function formatKoreanCurrency(num: number): string {
 
 export function ResourceCounter({ usedStones, totalCost, stonePrice }: ResourceCounterProps) {
   return (
-    <div className='bg-gray-700 rounded-lg p-4'>
+    <div className='bg-zinc-700 rounded-lg p-4'>
       <h3 className='text-lg font-semibold mb-2'>소모한 재화</h3>
       <div className='space-y-1'>
         <p>

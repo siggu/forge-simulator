@@ -12,7 +12,7 @@ export default function GachaWeapon({ params }: { params: Promise<{ category: st
   const categoryItems = gachaItems.filter((item) => item.category === category);
 
   return (
-    <div className='min-h-screen bg-gray-900 text-white p-4'>
+    <div className='min-h-screen bg-zinc-900 text-white p-4'>
       <div className='container mx-auto max-w-7xl'>
         <div className='flex flex-col'>
           <Link href='/' className='text-blue-400 hover:underline mb-4 inline-block'>

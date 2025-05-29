@@ -50,11 +50,11 @@ export default function Leaderboard() {
   if (entries.length === 0) return null;
 
   return (
-    <div className='bg-gray-800 p-4 rounded-lg mb-8'>
+    <div className='bg-zinc-800 p-4 rounded-lg mb-8'>
       <h2 className='text-2xl font-bold mb-4 text-yellow-400'>🏆 오늘의 리더보드</h2>
       <table className='w-full text-left text-sm'>
         <thead>
-          <tr className='text-gray-400 border-b border-gray-700'>
+          <tr className='text-zinc-400 border-b border-zinc-700'>
             <th className='py-2'>순위</th>
             <th className='py-2'>닉네임</th>
             <th className='py-2'>시도 횟수</th>
@@ -63,11 +63,11 @@ export default function Leaderboard() {
         </thead>
         <tbody>
           {entries.map((entry, index) => (
-            <tr key={index} className='border-b border-gray-700'>
+            <tr key={index} className='border-b border-zinc-700'>
               <td className='py-2'>{index + 1}</td>
               <td className='py-2'>{entry.nickname}</td>
               <td className='py-2'>{entry.attempts}</td>
-              <td className='py-2 hidden sm:table-cell text-gray-400'>
+              <td className='py-2 hidden sm:table-cell text-zinc-400'>
                 {new Date(entry.timestamp).toLocaleTimeString('ko-KR', {
                   hour: '2-digit',
                   minute: '2-digit',

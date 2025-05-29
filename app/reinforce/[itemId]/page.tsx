@@ -208,31 +208,30 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
   }
 
   return (
-    <div className='min-h-screen bg-gray-900 text-white p-4'>
+    <div className='min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900 text-white p-4'>
       <div className='container mx-auto max-w-7xl'>
         <div className='flex-row justify-between sm:flex-col items-center mb-4'>
-          <div className='flex justify-between'>
-            <Link href={`/items/${item.category}`} className='text-blue-400 hover:underline inline-block'>
+          <div className='flex flex-col sm:flex-row justify-between items-start gap-4 mb-6'>
+            <Link href={`/items/${item.category}`} className='text-blue-400 hover:underline'>
               ← 아이템 목록으로 돌아가기
             </Link>
             <Button
               variant='outline'
               onClick={handleReset}
-              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-red-400/10'
+              className='flex items-center gap-2 text-red-400 border-red-400 hover:bg-opacity-20 transition'
             >
               <RefreshCw size={16} />
-              초기화(단축키: r)
+              전체 초기화 (r)
             </Button>
           </div>
 
-          <div className='grid grid-cols-2 gap-8 mt-8'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-8 my-8'>
             {[11, 12, 13, 14].map((lvl) => (
               <Button
-                key={lvl}
                 variant='outline'
                 onClick={() => jumpToLevel(lvl)}
-                className='flex text-black items-center gap-2 border hover:bg-opacity-20'
                 disabled={level >= lvl}
+                className='flex items-center justify-center gap-2 border border-gray-300 text-black bg-white hover:bg-gray-100 transition-colors'
               >
                 {lvl}강 (단축키: {lvl - 10})
               </Button>
@@ -240,14 +239,16 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
           </div>
         </div>
 
-        <h1 className={`text-3xl font-bold my-6 ${categoryColorMap[item.category]}`}>{item.name} 강화</h1>
+        <h1 className={`text-3xl sm:text-4xl font-extrabold tracking-tight mb-8 ${categoryColorMap[item.category]}`}>
+          {item.name} 강화
+        </h1>
 
         {/* 강화 리더보드 */}
         <Leaderboard />
         <RegisterNickname isOpen={showModal} attempts={finalAttempts ?? attempts} />
         <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
           {/* Left side - Item display */}
-          <div className='bg-gray-800 rounded-lg p-6 flex flex-col items-center'>
+          <div className='bg-zinc-800 rounded-lg p-6 flex flex-col items-center'>
             <div className='relative w-64 h-64 mb-6'>
               <Image
                 src={currentImage || '/placeholder.svg'}
@@ -259,9 +260,9 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
 
             <div className='text-center w-full'>
               <h2 className='text-2xl font-bold mb-2'>{item.name}</h2>
-              <p className='text-gray-300 mb-4'>{item.description}</p>
+              <p className='text-zinc-300 mb-4'>{item.description}</p>
 
-              <div className='bg-gray-700 rounded-lg p-4 mb-4'>
+              <div className='bg-zinc-700 rounded-lg p-4 mb-4'>
                 <p className='text-xl'>
                   현재 강화 단계: <span className='font-bold'>{level}</span> / {item.maxLevel}
                 </p>
@@ -279,17 +280,17 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
           </div>
 
           {/* Right side - Reinforcement controls */}
-          <div className='bg-gray-800 rounded-lg p-6'>
+          <div className='bg-zinc-800 rounded-lg p-6'>
             <ResourceSettings stonePrice={stonePrice} setStonePrice={setStonePrice} />
 
-            <div className='mt-8 bg-gray-700 rounded-lg p-4'>
-              <h3 className='text-xl font-semibold mb-4'>다음 강화 비용</h3>
-              <div className='space-y-2 mb-4'>
-                <p>정교한 강화석: {stonesNeeded}개</p>
-                <p className='text-xl mt-4'>
-                  총 비용: <span className='font-bold'>{formatKoreanCurrency(nextLevelCost)} 골드</span>
-                </p>
-              </div>
+            <div className='mt-8 bg-zinc-700 rounded-lg p-4 shadow-sm'>
+              <h3 className='text-xl font-semibold mb-4 text-white'>다음 강화 비용</h3>
+              <p className='text-lg'>
+                정교한 강화석: <span className='font-bold'>{stonesNeeded}</span>개
+              </p>
+              <p className='text-xl mt-2'>
+                총 비용: <span className='font-bold text-green-400'>{formatKoreanCurrency(nextLevelCost)} 골드</span>
+              </p>
             </div>
 
             <ReinforceButton

@@ -6,10 +6,10 @@ const categoryTitleMap: Record<string, string> = {
 };
 
 const categoryColorMap: Record<string, string> = {
-  mystery: 'text-red-400',
-  hero: 'text-purple-400',
-  legendary: 'text-yellow-400',
-  mortal: 'text-red-400',
+  mystery: 'text-red-600',
+  hero: 'text-purple-600',
+  legendary: 'text-yellow-600',
+  mortal: 'text-red-600',
 };
 
 export { categoryTitleMap, categoryColorMap };

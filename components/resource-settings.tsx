@@ -7,7 +7,7 @@ interface ResourceSettingsProps {
 
 export function ResourceSettings({ stonePrice, setStonePrice }: ResourceSettingsProps) {
   return (
-    <div className='bg-gray-700 rounded-lg p-4'>
+    <div className='bg-zinc-700 rounded-lg p-4'>
       <h3 className='text-xl font-semibold mb-4'>재화 가격 설정</h3>
 
       <div className='space-y-4'>
@@ -21,7 +21,7 @@ export function ResourceSettings({ stonePrice, setStonePrice }: ResourceSettings
             min='1'
             value={stonePrice}
             onChange={(e) => setStonePrice(Number(e.target.value))}
-            className='w-full px-3 py-2 bg-gray-800 rounded border border-gray-600 text-white'
+            className='w-full px-3 py-2 bg-zinc-800 rounded border border-zinc-600 text-white'
           />
         </div>
       </div>
