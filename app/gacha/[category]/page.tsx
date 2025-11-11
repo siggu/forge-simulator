@@ -2,7 +2,7 @@
 
 import GachaCard from '@/components/gacha-card';
 import { categoryColorMap, categoryTitleMap } from '@/constants/categoryMap';
-import { gachaItems } from '@/lib/items-data';
+import { gachaItems } from '@/lib/items';
 import Link from 'next/link';
 import { use } from 'react';
 

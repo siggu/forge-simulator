@@ -13,7 +13,7 @@ type LeaderboardEntry = {
 export default function Leaderboard() {
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const params = useParams();
-  const itemId = params?.itemId as string;
+  const itemId = typeof params?.itemId === 'string' ? params.itemId : undefined;
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -30,7 +30,7 @@ export default function Leaderboard() {
         .gte('timestamp', todayISOString);
 
       if (error) {
-        console.error('리더보드 불러오기 오류:', error);
+        // Failed to fetch leaderboard
         return;
       }
 

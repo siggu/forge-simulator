@@ -14,12 +14,12 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const params = useParams();
-  const itemId = params?.itemId as string;
+  const itemId = typeof params?.itemId === 'string' ? params.itemId : undefined;
 
   // ✅ 닉네임 중복 확인 (Supabase 기반)
   useEffect(() => {
     const checkDuplicate = async () => {
-      if (!nickname.trim()) {
+      if (!nickname.trim() || !itemId) {
         setIsDuplicate(false);
         return;
       }
@@ -32,7 +32,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
         .gte('timestamp', `${today}T00:00:00.000Z`);
 
       if (error) {
-        console.error('중복 확인 오류:', error);
+        // Failed to check duplicate, skip validation
         return;
       }
 
@@ -54,7 +54,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
   }, [isOpen]);
 
   const handleSubmit = async () => {
-    if (!nickname || isDuplicate || isSubmitting) return;
+    if (!nickname || isDuplicate || isSubmitting || !itemId) return;
 
     setIsSubmitting(true);
 
@@ -71,7 +71,6 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
 
     if (error) {
       alert('등록 실패. 잠시 후 다시 시도해주세요.');
-      console.error(error);
       return;
     }
 

@@ -19,8 +19,8 @@ export default function ReinforcePage() {
     }
 
     audioRef.current = selectedAudio;
-    audioRef.current.play().catch((error) => {
-      console.error('Auto-play blocked:', error);
+    audioRef.current.play().catch(() => {
+      // Auto-play blocked by browser
     });
   };
 

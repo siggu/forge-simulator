@@ -14,7 +14,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
         setStoredValue(JSON.parse(item))
       }
     } catch (error) {
-      console.log(error)
+      // Failed to load from localStorage, using initial value
     }
   }, [key])
 
@@ -33,7 +33,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
         window.localStorage.setItem(key, JSON.stringify(valueToStore))
       }
     } catch (error) {
-      console.log(error)
+      // Failed to save to localStorage
     }
   }
 

@@ -1,6 +1,6 @@
 import { ItemCard } from '@/components/item-card';
 import { categoryColorMap, categoryTitleMap } from '@/constants/categoryMap';
-import { items } from '@/lib/items-data';
+import { items } from '@/lib/items';
 import Link from 'next/link';
 import { use } from 'react';
 

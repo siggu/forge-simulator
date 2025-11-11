@@ -4,7 +4,7 @@ import { playSound } from '@/utils/play-sound';
 import { use, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { items } from '@/lib/items-data';
+import { items } from '@/lib/items';
 import { ResourceSettings } from '@/components/resource-settings';
 import { ReinforceButton } from '@/components/reinforce-button';
 import { ResourceCounter } from '@/components/resource-counter';
@@ -16,6 +16,9 @@ import { LevelAttempts } from '@/components/level-attempts';
 import { HERO_STONE_AMOUNTS, LEGENDARY_STONE_AMOUNTS } from '@/lib/reinforcement-constants';
 import Leaderboard from '@/components/leader-board';
 import RegisterNickname from '@/components/register-nickname';
+import { categoryColorMap } from '@/constants/categoryMap';
+import { getSuccessRate, getFailRate, getResetRate } from '@/utils/reinforcement-probability';
+import { formatKoreanCurrency } from '@/utils/currency-formatter';
 
 export default function ReinforcePage({ params }: { params: Promise<{ itemId: string }> }) {
   const { itemId } = use(params);
@@ -76,7 +79,10 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     return <div>아이템을 찾을 수 없습니다.</div>;
   }
 
-  // Reset function to clear all records
+  /**
+   * Reset all reinforcement progress and statistics
+   * Clears level, stones used, cost, attempts, and history
+   */
   const handleReset = () => {
     setLevel(0);
     setUsedStones(0);
@@ -89,45 +95,20 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     setFinalAttempts(null);
   };
 
-  // Jump to level 10 function
+  /**
+   * Jump directly to a specific reinforcement level
+   * Used for testing or quick navigation to higher levels
+   * @param targetLevel - The level to jump to
+   */
   const jumpToLevel = (targetLevel: number) => {
     setLevel(targetLevel);
     setHistory((prev) => [...prev, { level: targetLevel, result: 'success', timestamp: Date.now() }]);
   };
 
-  // Get success rate based on current level
-  const getSuccessRate = (currentLevel: number) => {
-    if (currentLevel === 0) return 100;
-    if (currentLevel >= 1 && currentLevel <= 4) return 75;
-    if (currentLevel === 5) return 60;
-    if (currentLevel === 6) return 45;
-    if (currentLevel >= 7 && currentLevel <= 11) return 40;
-    if (currentLevel === 12) return 30;
-    if (currentLevel === 13) return 20;
-    if (currentLevel === 14) return 10;
-    return 0;
-  };
-
-  // Get fail rate (decrease or stay at current level) based on current level
-  const getFailRate = (currentLevel: number) => {
-    if (currentLevel === 0) return 0;
-    if (currentLevel >= 1 && currentLevel <= 4) return 25;
-    if (currentLevel === 5) return 40;
-    if (currentLevel === 6) return 55;
-    if (currentLevel >= 7 && currentLevel <= 11) return 57.5;
-    if (currentLevel === 12) return 67.5;
-    if (currentLevel === 13) return 77.5;
-    if (currentLevel === 14) return 87.5;
-    return 0;
-  };
-
-  // Get reset rate based on current level
-  const getResetRate = (currentLevel: number) => {
-    if (currentLevel < 7) return 0;
-    return 2.5;
-  };
-
-  // Update the handleReinforce function to include updated probability calculations
+  /**
+   * Handle reinforcement attempt
+   * Calculates success/fail/reset based on probability rates and updates state accordingly
+   */
   const handleReinforce = () => {
     if (level >= item.maxLevel) return;
 
@@ -176,36 +157,10 @@ export default function ReinforcePage({ params }: { params: Promise<{ itemId: st
     playSound(result);
   };
 
-  const categoryColorMap: Record<string, string> = {
-    hero: 'text-purple-400',
-    legendary: 'text-yellow-400',
-    mortal: 'text-red-400',
-  };
-
   const currentImage = item.images[Math.min(level, item.images.length - 1)];
 
   const stonesNeeded = item.category === 'hero' ? HERO_STONE_AMOUNTS[level] : LEGENDARY_STONE_AMOUNTS[level];
   const nextLevelCost = stonesNeeded * stonePrice;
-
-  function formatKoreanCurrency(num: number): string {
-    if (num === 0) return '0';
-
-    const units = ['억', '천만', '백만', '십만', '만', '천', '백', '십', ''];
-    const unitValues = [100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1];
-    const result = [];
-
-    for (let i = 0; i < unitValues.length; i++) {
-      const unitValue = unitValues[i];
-      const unit = units[i];
-      const digit = Math.floor(num / unitValue);
-      if (digit > 0) {
-        result.push(`${digit}${unit}`);
-        num %= unitValue;
-      }
-    }
-
-    return result.join(' ');
-  }
 
   return (
     <div className='min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900 text-white p-4'>
