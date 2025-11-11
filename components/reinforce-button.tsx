@@ -23,10 +23,10 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
     return (
       <div className='mt-8'>
         {/* Fixed height container for probability info to prevent button from moving */}
-        <div className='h-[160px] bg-zinc-700 rounded-lg p-4 mb-4'>
-          <h3 className='text-lg font-semibold mb-2'>강화 확률</h3>
+        <div className='h-[160px] bg-slate-900 rounded-lg p-4 mb-4 border border-slate-700'>
+          <h3 className='text-lg font-semibold mb-2 text-white'>강화 확률</h3>
           {showProbability ? (
-            <div className='space-y-1'>
+            <div className='space-y-1 text-slate-300'>
               <div className='flex justify-between'>
                 <span>성공 (레벨 상승)</span>
                 <span className='text-green-400'>{successRate}%</span>
@@ -35,7 +35,7 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
               {level < 8 ? (
                 <div className='flex justify-between'>
                   <span>실패 (유지)</span>
-                  <span className='text-zinc-400'>{failRate}%</span>
+                  <span className='text-slate-400'>{failRate}%</span>
                 </div>
               ) : (
                 <div className='flex justify-between'>
@@ -53,7 +53,7 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
             </div>
           ) : (
             <div className='flex items-center justify-center h-[100px]'>
-              <p className='text-zinc-400'>최대 강화 단계에 도달했습니다.</p>
+              <p className='text-slate-400'>최대 강화 단계에 도달했습니다.</p>
             </div>
           )}
         </div>
@@ -62,11 +62,11 @@ export const ReinforceButton = forwardRef<HTMLButtonElement, ReinforceButtonProp
           ref={ref}
           onClick={onClick}
           disabled={disabled}
-          className={`w-full py-4 px-6 rounded-lg text-xl font-bold transition-all duration-300
+          className={`w-full py-4 px-6 rounded-lg text-xl font-bold transition-all duration-200
             ${
               disabled
-                ? 'bg-zinc-600 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-500 active:transform active:scale-95'
+                ? 'bg-slate-600 cursor-not-allowed text-slate-400'
+                : 'bg-blue-600 hover:bg-blue-500 text-white active:transform active:scale-95'
             }`}
         >
           {level >= maxLevel ? '최대 강화 달성!' : '강화하기(단축키: spacebar)'}

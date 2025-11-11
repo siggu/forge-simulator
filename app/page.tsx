@@ -22,10 +22,10 @@ export default function Home() {
   ];
 
   return (
-    <main className='min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900 text-white'>
-      <div className='container mx-auto max-w-[1280px] px-6 py-12'>
+    <main className='min-h-screen bg-slate-900 text-white'>
+      <div className='container mx-auto max-w-[1280px] px-6 py-16'>
         {/* 헤더 영역 */}
-        <div className='flex items-center justify-center gap-8 mb-12'>
+        <div className='flex items-center justify-center gap-4 md:gap-8 mb-16'>
           {/* 왼쪽 캐릭터 */}
           <div className='relative group cursor-pointer' onMouseEnter={getRandomText}>
             <Image
@@ -33,15 +33,21 @@ export default function Home() {
               width={100}
               height={100}
               alt='robbery_chibi'
-              className='drop-shadow-lg'
             />
-            <div className='absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-black/80 backdrop-blur rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap z-10'>
+            <div className='absolute top-full left-1/2 transform -translate-x-1/2 mt-3 px-4 py-2 text-sm text-white bg-slate-800 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-20 border border-slate-700'>
               {randomText}
             </div>
           </div>
 
           {/* 타이틀 */}
-          <h1 className='text-4xl md:text-5xl font-extrabold tracking-tight text-center'>원숭이 시뮬레이터</h1>
+          <div className='text-center'>
+            <h1 className='text-5xl md:text-7xl font-bold tracking-tight text-white mb-2'>
+              원숭이 시뮬레이터
+            </h1>
+            <p className='text-slate-400 text-sm md:text-base'>
+              강화, 가챠, 환산을 한 곳에서
+            </p>
+          </div>
 
           {/* 오른쪽 캐릭터 */}
           <div className='relative group cursor-pointer' onMouseEnter={getRandomText}>
@@ -50,9 +56,8 @@ export default function Home() {
               width={100}
               height={100}
               alt='candleknight_chibi'
-              className='drop-shadow-lg'
             />
-            <div className='absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-4 py-2 text-sm text-white bg-black/80 backdrop-blur rounded-lg opacity-0 group-hover:opacity-100 transition duration-300 whitespace-nowrap z-10'>
+            <div className='absolute top-full left-1/2 transform -translate-x-1/2 mt-3 px-4 py-2 text-sm text-white bg-slate-800 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-20 border border-slate-700'>
               {randomText}
             </div>
           </div>
@@ -64,16 +69,19 @@ export default function Home() {
             <Link
               key={link.text}
               href={link.href}
-              className='block p-6 bg-zinc-800 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transform transition duration-300 ease-in-out text-center font-semibold text-lg tracking-tight hover:bg-zinc-700'
+              className='block rounded-xl bg-slate-800 border border-slate-700 hover:border-slate-600 hover:bg-slate-750 transition-all duration-200 p-8'
             >
-              {link.text}
+              <h2 className='text-2xl font-bold text-center text-white'>
+                {link.text}
+              </h2>
             </Link>
           ))}
         </div>
-      </div>
 
-      <div className='mt-12 flex justify-center'>
-        <InstallPWAButton />
+        {/* PWA Install Button */}
+        <div className='mt-16 flex justify-center'>
+          <InstallPWAButton />
+        </div>
       </div>
     </main>
   );

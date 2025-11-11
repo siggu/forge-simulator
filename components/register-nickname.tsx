@@ -84,27 +84,27 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 text-black'>
-      <div className='bg-white p-6 rounded-xl max-w-sm w-full text-center'>
-        <h2 className='text-xl font-bold mb-4'>축하합니다! 🎉</h2>
-        <p className='mb-2'>
-          총 강화 시도: <strong>{attempts === 0 ? 1 : attempts}</strong>번
+    <div className='fixed inset-0 bg-black/70 flex items-center justify-center z-50'>
+      <div className='bg-slate-800 p-6 rounded-xl max-w-sm w-full text-center border border-slate-700 shadow-xl'>
+        <h2 className='text-xl font-bold mb-4 text-white'>축하합니다! 🎉</h2>
+        <p className='mb-2 text-slate-300'>
+          총 강화 시도: <strong className='text-white'>{attempts === 0 ? 1 : attempts}</strong>번
         </p>
         <input
           type='text'
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           placeholder='닉네임을 입력하세요'
-          className='border rounded px-4 py-2 w-full mb-2'
+          className='bg-slate-900 border border-slate-700 rounded px-4 py-2 w-full mb-2 text-white focus:outline-none focus:border-blue-500'
         />
-        {isDuplicate && <p className='text-red-500 text-sm mb-2'>이미 등록된 닉네임입니다.</p>}
+        {isDuplicate && <p className='text-red-400 text-sm mb-2'>이미 등록된 닉네임입니다.</p>}
         <button
           onClick={handleSubmit}
           disabled={!nickname || isDuplicate || isSubmitting}
-          className={`px-4 py-2 rounded w-full text-white mb-2 ${
+          className={`px-4 py-2 rounded w-full text-white mb-2 transition-all duration-200 ${
             !nickname || isDuplicate || isSubmitting
-              ? 'bg-zinc-400 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700'
+              ? 'bg-slate-600 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-500'
           }`}
         >
           {isSubmitting ? '등록 중...' : '등록하기'}
@@ -112,7 +112,7 @@ export default function RegisterNickname({ attempts, isOpen }: Props) {
 
         <button
           onClick={handleModalClose}
-          className='px-4 py-2 rounded w-full text-zinc-700 bg-zinc-200 hover:bg-zinc-300'
+          className='px-4 py-2 rounded w-full text-slate-300 bg-slate-700 hover:bg-slate-600 transition-all duration-200'
         >
           닫기(esc)
         </button>

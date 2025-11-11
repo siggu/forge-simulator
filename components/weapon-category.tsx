@@ -8,20 +8,51 @@ interface WeaponCategoryProps {
 }
 
 const colorMap = {
-  blue: 'bg-blue-600 hover:bg-blue-500 text-white border-blue-700',
-  purple: 'bg-purple-600 hover:bg-purple-500 text-white border-purple-700',
-  yellow: 'bg-yellow-500 hover:bg-yellow-400 text-black border-yellow-600',
-  red: 'bg-red-600 hover:bg-red-500 text-white border-red-700',
+  blue: {
+    bg: 'bg-blue-500/10',
+    hover: 'group-hover:bg-blue-500/20',
+    border: 'border-blue-500/30 group-hover:border-blue-400/60',
+    glow: 'group-hover:shadow-blue-500/50',
+    text: 'text-blue-300',
+  },
+  purple: {
+    bg: 'bg-purple-500/10',
+    hover: 'group-hover:bg-purple-500/20',
+    border: 'border-purple-500/30 group-hover:border-purple-400/60',
+    glow: 'group-hover:shadow-purple-500/50',
+    text: 'text-purple-300',
+  },
+  yellow: {
+    bg: 'bg-yellow-500/10',
+    hover: 'group-hover:bg-yellow-500/20',
+    border: 'border-yellow-500/30 group-hover:border-yellow-400/60',
+    glow: 'group-hover:shadow-yellow-500/50',
+    text: 'text-yellow-300',
+  },
+  red: {
+    bg: 'bg-red-500/10',
+    hover: 'group-hover:bg-red-500/20',
+    border: 'border-red-500/30 group-hover:border-red-400/60',
+    glow: 'group-hover:shadow-red-500/50',
+    text: 'text-red-300',
+  },
 };
 
 export function WeaponCategory({ title, color, href, onClick }: WeaponCategoryProps) {
+  const colors = colorMap[color];
+
   return (
     <div onClick={onClick}>
       <Link
         href={href}
-        className={`${colorMap[color]} p-8 rounded-xl border-2 shadow-md transition-all duration-300 transform hover:scale-105 flex items-center justify-center`}
+        className={`group block relative overflow-hidden rounded-2xl ${colors.bg} ${colors.hover} border ${colors.border} shadow-xl transform hover:-translate-y-2 transition-all duration-200 p-10`}
       >
-        <h2 className='text-3xl font-bold text-center tracking-tight'>{title}</h2>
+        {/* Content */}
+        <div className='relative z-10 text-center'>
+          <h2 className={`text-4xl font-extrabold tracking-tight ${colors.text}`}>
+            {title}
+          </h2>
+        </div>
       </Link>
     </div>
   );

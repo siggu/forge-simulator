@@ -53,13 +53,13 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
 
       {/* 뽑기 결과 */}
       {current && (
-        <div className='text-center mt-6 bg-zinc-800 px-6 py-4 rounded-xl shadow-lg w-full max-w-sm'>
+        <div className='text-center mt-6 bg-slate-800 px-6 py-4 rounded-xl shadow-lg w-full max-w-sm border border-slate-700'>
           <div className='relative w-32 aspect-square mx-auto mb-4 bg-white rounded-lg shadow'>
             <Image src={current.image} alt={current.name} fill className='object-contain p-2' sizes='128px' />
           </div>
           <div className='flex gap-3 items-center justify-center'>
             <Image src='/button/icon_daebak.png' width={40} height={30} alt='대박' />
-            <div className='text-lg font-bold text-yellow-300 line-clamp-2 leading-snug break-words'>
+            <div className='text-lg font-bold text-white line-clamp-2 leading-snug break-words'>
               {current.name}
             </div>
             <Image src='/button/icon_daebak.png' width={40} height={30} alt='대박' />
@@ -70,21 +70,21 @@ export default function GachaCard({ items }: { items: GachaItem[] }) {
       {/* 뽑기 목록 보기 버튼 */}
       <button
         onClick={() => setIsListOpen((prev) => !prev)}
-        className='mt-4 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition'
+        className='mt-4 px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-all duration-200'
       >
         {isListOpen ? '뽑기 목록 닫기' : '뽑기 목록 보기'}
       </button>
 
       {/* 뽑기 아이템 목록 */}
       {isListOpen && (
-        <div className='mt-4 bg-white text-black rounded-xl shadow-lg p-4 w-fit max-w-4xl overflow-x-auto'>
+        <div className='mt-4 bg-slate-800 text-white rounded-xl shadow-lg p-4 w-fit max-w-4xl overflow-x-auto border border-slate-700'>
           <div className='flex gap-9'>
             {items.map((item) => (
               <div key={`list-${item.id}`} className='flex flex-col items-center w-24 flex-shrink-0'>
-                <div className='relative w-20 aspect-square bg-zinc-100 rounded shadow-sm'>
+                <div className='relative w-20 aspect-square bg-slate-700 rounded shadow-sm'>
                   <Image src={item.image} alt={item.name} fill className='object-contain p-1' sizes='80px' />
                 </div>
-                <div className='text-xs text-center mt-1 truncate'>{item.name}</div>
+                <div className='text-xs text-center mt-1 truncate text-slate-300'>{item.name}</div>
               </div>
             ))}
           </div>
