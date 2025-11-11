@@ -33,14 +33,14 @@ export function ReinforcementHistory({ history }: ReinforcementHistoryProps) {
   }
 
   return (
-    <div className='bg-zinc-700 rounded-lg p-4 mt-4'>
-      <h3 className='text-lg font-semibold mb-2'>강화 기록</h3>
+    <div className='bg-slate-900 rounded-lg p-4 mt-4 border border-slate-700'>
+      <h3 className='text-lg font-semibold mb-2 text-white'>강화 기록</h3>
       <div className='max-h-40 overflow-y-auto'>
         {history
           .slice()
           .reverse()
           .map((entry, index) => (
-            <div key={index} className='flex justify-between py-1 border-b border-zinc-600 last:border-0'>
+            <div key={index} className='flex justify-between py-1 border-b border-slate-700 last:border-0 text-slate-300'>
               <span>
                 {new Date(entry.timestamp).toLocaleTimeString()} -
                 {entry.result === 'success'

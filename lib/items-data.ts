@@ -217,7 +217,7 @@ export const items: Item[] = [
       { level: 10, damage: 1717, cooldown: 17, mana: 29 },
       { level: 11, damage: 1872, cooldown: 17, mana: 29 },
       { level: 12, damage: 2109, cooldown: 17, mana: 24 },
-      { level: 13, damage: 23512, cooldown: 17, mana: 24 },
+      { level: 13, damage: 2351, cooldown: 17, mana: 24 },
       { level: 14, damage: 2949, cooldown: 17, mana: 24 },
       { level: 15, damage: 3707, cooldown: 17, mana: 24 },
     ],

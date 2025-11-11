@@ -26,14 +26,14 @@ function formatKoreanCurrency(num: number): string {
 
 export function ResourceCounter({ usedStones, totalCost, stonePrice }: ResourceCounterProps) {
   return (
-    <div className='bg-zinc-700 rounded-lg p-4'>
-      <h3 className='text-lg font-semibold mb-2'>소모한 재화</h3>
-      <div className='space-y-1'>
+    <div className='bg-slate-900 rounded-lg p-4 border border-slate-700'>
+      <h3 className='text-lg font-semibold mb-2 text-white'>소모한 재화</h3>
+      <div className='space-y-1 text-slate-300'>
         <p>
           정교한 강화석: {usedStones}개 ({usedStones * stonePrice} 골드)
         </p>
         <p className='text-xl mt-2'>
-          총 비용: <span className='font-bold'>{formatKoreanCurrency(totalCost)}</span> 골드
+          총 비용: <span className='font-bold text-white'>{formatKoreanCurrency(totalCost)}</span> 골드
         </p>
       </div>
     </div>

@@ -15,13 +15,13 @@ export function LevelAttempts({ attemptsPerLevel, maxLevel }: LevelAttemptsProps
   }
 
   return (
-    <div className='bg-zinc-700 rounded-lg p-4 mt-4'>
-      <h3 className='text-lg font-semibold mb-2'>강화 단계별 시도 횟수</h3>
+    <div className='bg-slate-900 rounded-lg p-4 mt-4 border border-slate-700'>
+      <h3 className='text-lg font-semibold mb-2 text-white'>강화 단계별 시도 횟수</h3>
       <div className='grid grid-cols-3 gap-2 max-h-40 overflow-y-auto'>
         {levelsWithAttempts.map((level) => (
-          <div key={level} className='flex justify-between py-1 px-2 bg-zinc-800 rounded'>
+          <div key={level} className='flex justify-between py-1 px-2 bg-slate-800 rounded border border-slate-700 text-slate-300'>
             <span>{level}강:</span>
-            <span className='font-bold'>{attemptsPerLevel[level] || 0}회</span>
+            <span className='font-bold text-white'>{attemptsPerLevel[level] || 0}회</span>
           </div>
         ))}
       </div>
